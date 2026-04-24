@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<!--
+  ─────────────────────────────────────────────────────────────
+    DarNa — Plateforme de location authentique au Maroc 🇲🇦
+    Author    : Abdelbadie Abkhich (@badiebakch90-ops)
+    Original  : https://github.com/badiebakch90-ops/DarNa
+    Copyright : © 2026 Abdelbadie Abkhich — All rights reserved
+    License   : See LICENSE file
+  ─────────────────────────────────────────────────────────────
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarNa | Detail du logement</title>
+<meta name="theme-color" content="#C4622D">
+<meta name="description" content="Detail d'un logement DarNa au Maroc - photos, equipements et reservation.">
+<meta name="robots" content="index,follow">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23C4622D'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='58' font-weight='600' text-anchor='middle' fill='%23FDFAF6'%3ED%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terracotta: #c4622d;
+    --terracotta-deep: #9e4b1f;
+    --gold: #c9a84c;
+    --ivory: #fdfaf6;
+    --sand: #f5e6d3;
+    --sand-light: #f8efe6;
+    --charcoal: #1c1714;
+    --ink: #2e2420;
+    --muted: #76675d;
+    --border: rgba(196, 98, 45, 0.16);
+    --shadow-soft: 0 24px 70px rgba(28, 23, 20, 0.08);
+    --shadow-card: 0 10px 40px rgba(196, 98, 45, 0.12);
+    --radius-lg: 26px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Manrope', system-ui, sans-serif;
+  }
+
+  /* ── DARK MODE ─────────────────────────── */
+  html.dark {
+    --ivory: #150F0B;
+    --sand: #2A1F18;
+    --sand-light: #1E1510;
+    --charcoal: #F5EDE6;
+    --ink: #EDE0D6;
+    --muted: #9A8A7E;
+    --border: rgba(196, 98, 45, 0.22);
+    --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.35);
+    --shadow-card: 0 10px 40px rgba(196, 98, 45, 0.18);
+  }
+  html.dark body {
+    background: radial-gradient(circle at top right, rgba(196,98,45,0.1), transparent 30%),
+                linear-gradient(180deg, #1a100a 0%, #150F0B 36%, #120d09 100%);
+  }
+  html.dark .topbar { background: rgba(21,15,11,0.92); }
+  html.dark .panel { background: rgba(30, 21, 16, 0.95); }
+  html.dark .fact-card { background: #2A1F18; }
+  html.dark .chip { background: #2A1F18; }
+  html.dark .local-item { background: #2A1F18; }
+  html.dark .map-badge { background: rgba(21,15,11,0.92); color: var(--charcoal); }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    background:
+      radial-gradient(circle at top right, rgba(196, 98, 45, 0.12), transparent 30%),
+      linear-gradient(180deg, #fbf4ec 0%, var(--ivory) 36%, #fffaf5 100%);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+  a { color: inherit; text-decoration: none; }
+  button {
+    border: none;
+    background: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    background: rgba(253, 250, 246, 0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 14px 34px rgba(28, 23, 20, 0.08);
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--muted);
+    transition: color 0.2s, transform 0.2s;
+  }
+  .back-link:hover { color: var(--terracotta); transform: translateX(-2px); }
+  .brand {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--charcoal);
+  }
+  .brand em { color: var(--terracotta); font-style: normal; }
+  .top-chip {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--sand);
+    color: var(--terracotta);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .page {
+    width: min(1260px, calc(100% - 40px));
+    margin: 34px auto 64px;
+  }
+  .hero-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 34px;
+    padding: 42px;
+    background:
+      radial-gradient(circle at 78% 20%, rgba(255, 255, 255, 0.2), transparent 24%),
+      linear-gradient(135deg, rgba(196, 98, 45, 0.92), rgba(33, 23, 18, 0.92));
+    color: #fff;
+    box-shadow: var(--shadow-card);
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(120deg, rgba(18, 12, 9, 0.78) 8%, rgba(18, 12, 9, 0.36) 48%, rgba(196, 98, 45, 0.3) 100%);
+    pointer-events: none;
+  }
+  .hero-card::after {
+    content: '';
+    position: absolute;
+    inset: 18px;
+    border-radius: 26px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    pointer-events: none;
+  }
+  .hero-top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 244, 229, 0.86);
+    margin-bottom: 18px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 34px;
+    height: 1px;
+    background: rgba(255, 244, 229, 0.7);
+  }
+  .property2-title {
+    font-family: var(--font-display);
+    font-size: clamp(42px, 5vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    max-width: 700px;
+  }
+  .property2-location {
+    margin-top: 18px;
+    font-size: 16px;
+    color: rgba(255, 244, 229, 0.86);
+  }
+  .property2-summary {
+    max-width: 650px;
+    margin-top: 18px;
+    line-height: 1.75;
+    color: rgba(255, 244, 229, 0.82);
+    font-size: 15px;
+  }
+  .hero-price {
+    position: relative;
+    z-index: 1;
+    min-width: 220px;
+    padding: 20px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px);
+  }
+  .hero-price-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(255, 244, 229, 0.72);
+  }
+  .hero-price-value {
+    margin-top: 12px;
+    font-size: 34px;
+    font-weight: 700;
+  }
+  .hero-price-value span {
+    font-size: 15px;
+    font-weight: 400;
+    color: rgba(255, 244, 229, 0.78);
+  }
+  .hero-meta {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .meta-pill {
+    padding: 11px 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    font-size: 13px;
+    color: rgba(255, 244, 229, 0.9);
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.9fr);
+    gap: 30px;
+    margin-top: 30px;
+    align-items: start;
+  }
+  .stack {
+    display: grid;
+    gap: 28px;
+  }
+  .panel {
+    background: rgba(255, 255, 255, 0.84);
+    border: 1px solid rgba(196, 98, 45, 0.12);
+    box-shadow: var(--shadow-soft);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  }
+  .panel:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 28px 68px rgba(28, 23, 20, 0.12);
+    border-color: rgba(196, 98, 45, 0.2);
+  }
+  .panel-title {
+    font-family: var(--font-display);
+    font-size: 34px;
+    color: var(--charcoal);
+    margin-bottom: 18px;
+  }
+  .panel-subtitle {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .gallery-grid {
+    display: grid;
+    gap: 18px;
+  }
+  .gallery-main {
+    min-height: 430px;
+    border-radius: 26px;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, rgba(196, 98, 45, 0.85), rgba(33, 23, 18, 0.9));
+    box-shadow: var(--shadow-card);
+  }
+  .gallery-main::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(20, 14, 11, 0.48), transparent 55%);
+  }
+  .gallery-label {
+    position: absolute;
+    left: 22px;
+    bottom: 22px;
+    z-index: 1;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+    color: #fff;
+  }
+  .gallery-label strong {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 245, 232, 0.76);
+  }
+  .gallery-label span {
+    font-family: var(--font-display);
+    font-size: 28px;
+  }
+  .thumb-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .thumb-btn {
+    min-height: 102px;
+    border-radius: 18px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, rgba(196, 98, 45, 0.75), rgba(33, 23, 18, 0.86));
+    transition: transform 0.24s, border-color 0.24s, box-shadow 0.24s;
+  }
+  .thumb-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 34px rgba(28, 23, 20, 0.18);
+  }
+  .thumb-btn.is-active {
+    border-color: rgba(196, 98, 45, 0.5);
+    transform: translateY(-2px);
+  }
+  .thumb-btn::after {
+    content: attr(data-label);
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    font-size: 11px;
+    color: #fff;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .fact-card {
+    padding: 18px;
+    border-radius: 18px;
+    background: var(--sand-light);
+    border: 1px solid rgba(196, 98, 45, 0.08);
+    transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+  }
+  .fact-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(196, 98, 45, 0.18);
+    box-shadow: 0 16px 30px rgba(28, 23, 20, 0.08);
+  }
+  .fact-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .fact-value {
+    margin-top: 8px;
+    font-size: 18px;
+    color: var(--charcoal);
+    font-weight: 600;
+  }
+
+  .copy {
+    line-height: 1.85;
+    color: var(--muted);
+    font-size: 15px;
+  }
+  .copy + .copy { margin-top: 16px; }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .chip {
+    padding: 11px 14px;
+    border-radius: 999px;
+    background: var(--sand-light);
+    border: 1px solid rgba(196, 98, 45, 0.12);
+    color: var(--ink);
+    font-size: 13px;
+  }
+
+  .local-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .local-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: var(--sand-light);
+    border: 1px solid rgba(196, 98, 45, 0.08);
+    transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+  }
+  .local-item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(196, 98, 45, 0.18);
+    box-shadow: 0 16px 30px rgba(28, 23, 20, 0.08);
+  }
+  .local-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-top: 8px;
+    background: var(--terracotta);
+    flex-shrink: 0;
+  }
+  .local-item p {
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .side-column {
+    display: grid;
+    gap: 24px;
+    position: sticky;
+    top: 96px;
+  }
+  .map-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    min-height: 370px;
+    background: linear-gradient(135deg, rgba(196, 98, 45, 0.16), rgba(33, 23, 18, 0.22));
+    border: 1px solid rgba(196, 98, 45, 0.12);
+  }
+  .map-frame iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 370px;
+    border: 0;
+  }
+  .map-badge {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--charcoal);
+    box-shadow: 0 10px 24px rgba(28, 23, 20, 0.12);
+    font-size: 12px;
+  }
+  .map-caption {
+    margin: 14px 0 20px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 14px;
+  }
+  .side-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px 18px;
+    border-radius: 999px;
+    background: var(--charcoal);
+    color: #fff;
+    box-shadow: 0 16px 34px rgba(28, 23, 20, 0.18);
+    transition: transform 0.24s, background 0.24s, box-shadow 0.24s;
+  }
+  .side-cta:hover {
+    background: var(--terracotta);
+    transform: translateY(-2px);
+  }
+  html.dark .side-cta {
+    background: linear-gradient(135deg, #7c3718, #93451d);
+    color: #fff7f1;
+    box-shadow: 0 10px 30px rgba(196, 98, 45, 0.22);
+  }
+  html.dark .side-cta:hover {
+    background: linear-gradient(135deg, #9a4a21, #c4622d);
+  }
+  .side-secondary {
+    margin-top: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--terracotta);
+    font-size: 14px;
+    transition: transform 0.22s ease, color 0.22s ease;
+  }
+  .side-secondary:hover {
+    transform: translateX(3px);
+  }
+  .booking-note {
+    margin-top: 18px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 14px;
+  }
+  .alert {
+    display: none;
+    margin-bottom: 20px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(201, 168, 76, 0.16);
+    color: #7a5a11;
+    border: 1px solid rgba(201, 168, 76, 0.26);
+  }
+  .alert.show { display: block; }
+
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 1080px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .side-column { position: static; }
+  }
+  @media (max-width: 780px) {
+    .topbar {
+      padding: 16px 18px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .page { width: min(100% - 22px, 1260px); margin-top: 20px; }
+    .hero-card, .panel { padding: 22px; }
+    .hero-top { flex-direction: column; }
+    .hero-price { width: 100%; }
+    .gallery-main { min-height: 280px; }
+    .thumb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .info-grid { grid-template-columns: 1fr; }
+    .side-cta, .side-secondary { width: 100%; justify-content: center; }
+  }
+  </style>
+<script>
+  /* Sync dark mode from index.html preference immediately (before render) */
+  (function() {
+    const saved = localStorage.getItem('darna-theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back-link" href="index.html#stays">
+      <span>&larr;</span>
+      <span>Retour à la sélection</span>
+    </a>
+    <a class="brand" href="index.html#top">Dar<em>Na</em></a>
+    <div class="top-chip" id="topChip">Page detail</div>
+  </header>
+
+  <main class="page">
+    <div class="alert" id="alertBox">Logement introuvable. Nous affichons une suggestion proche.</div>
+
+    <section class="hero-card" id="heroCard" data-reveal>
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow" id="property2Eyebrow">Séjour signature</div>
+          <h1 class="property2-title" id="property2Name">Riad Al Baraka</h1>
+          <p class="property2-location" id="property2Location"></p>
+          <p class="property2-summary" id="property2Summary"></p>
+        </div>
+        <div class="hero-price">
+          <div class="hero-price-label">Tarif moyen</div>
+          <div class="hero-price-value" id="property2Price"></div>
+        </div>
+      </div>
+      <div class="hero-meta" id="heroMeta"></div>
+    </section>
+
+    <section class="content-grid">
+      <div class="stack">
+        <article class="panel" data-reveal style="--reveal-delay: 60ms;">
+          <div class="panel-subtitle">Galerie</div>
+          <div class="gallery-grid">
+            <div class="gallery-main" id="galleryMain">
+              <div class="gallery-label">
+                <strong>Ambiance</strong>
+                <span id="galleryCaption">Vue principale</span>
+              </div>
+            </div>
+            <div class="thumb-grid" id="galleryThumbs"></div>
+          </div>
+        </article>
+
+        <article class="panel" data-reveal style="--reveal-delay: 100ms;">
+          <div class="panel-subtitle">Description</div>
+          <h2 class="panel-title">Le lieu</h2>
+          <p class="copy" id="property2Description"></p>
+          <p class="copy" id="property2Story"></p>
+        </article>
+
+        <article class="panel" data-reveal style="--reveal-delay: 140ms;">
+          <div class="panel-subtitle">Informations</div>
+          <h2 class="panel-title">Ce qui vous attend</h2>
+          <div class="info-grid" id="factsGrid"></div>
+        </article>
+
+        <article class="panel" data-reveal style="--reveal-delay: 180ms;">
+          <div class="panel-subtitle">Équipements</div>
+          <h2 class="panel-title">Confort sur place</h2>
+          <div class="chips" id="amenitiesList"></div>
+        </article>
+
+        <article class="panel" data-reveal style="--reveal-delay: 220ms;">
+          <div class="panel-subtitle">Autour du logement</div>
+          <h2 class="panel-title">Le quartier</h2>
+          <div class="local-list" id="localList"></div>
+        </article>
+      </div>
+
+      <aside class="side-column">
+        <article class="panel" data-reveal style="--reveal-delay: 260ms;">
+          <div class="panel-subtitle">Localisation</div>
+          <h2 class="panel-title">Où se trouve ce logement</h2>
+          <p class="map-caption" id="map2Caption"></p>
+          <div class="map-frame">
+            <iframe
+              id="property2Map"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen
+              title="Carte de localisation"></iframe>
+            <div class="map-badge" id="map2Badge">Position du logement</div>
+          </div>
+          <a class="side-secondary" id="property2MapLink" href="#" target="_blank" rel="noreferrer">
+            <span>Ouvrir dans Google Maps</span>
+            <span>&rarr;</span>
+          </a>
+        </article>
+
+        <article class="panel">
+          <div class="panel-subtitle">Réservation</div>
+          <h2 class="panel-title">Envie d'en savoir plus ?</h2>
+          <p class="copy" id="booking2Summary"></p>
+          <a class="side-cta" id="reserve2Btn" href="reservation.html">Reserver ce sejour</a>
+          <a class="side-secondary" id="backToListings2" href="index.html#listings">
+            <span>Revenir aux sejours</span>
+            <span>&rarr;</span>
+          </a>
+          <p class="booking-note">Contacte-nous via WhatsApp pour verifier la disponibilite et reserver ce logement.</p>
+          <a href="https://wa.me/212721414433" target="_blank" rel="noopener" class="btn-whatsapp" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:12px 22px;border-radius:30px;font-weight:600;text-decoration:none;margin-top:10px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+            Contacter sur WhatsApp
+          </a>
+        </article>
+      </aside>
+    </section>
+</main>
+
+<script src="./darna-static.js"></script>
+<script>
+const properties = {
+  'riad-al-baraka': {
+    type: 'Riad',
+    eyebrow: 'Riad au coeur de la Medina',
+    name: 'Riad Al Baraka',
+    location: 'Marrakech, Medina',
+    summary: "Un riad chaleureux organise autour d'un patio vegetal, pense pour les voyageurs qui veulent vivre la Medina dans une ambiance calme et raffinée.",
+    description: "Le Riad Al Baraka melange architecture traditionnelle, tadelakt, bois sculpte et coins lecture baignes de lumiere. La circulation s'organise autour d'un patio central avec bassin et salon exterieur.",
+    story: "Les chambres s'ouvrent sur des terrasses privees, et les espaces communs alternent entre ombre, fraicheur et vues sur les toits ocre de Marrakech. C'est une adresse idéale pour un séjour en couple, en famille ou pour un petit groupe.",
+    price: '850 MAD <span>/ nuit</span>',
+    rating: '4.9',
+    reviews: '128 avis',
+    facts: [
+      ['Voyageurs', '6 personnes'],
+      ['Chambres', '3 suites'],
+      ['Salles de bain', '3 bains'],
+      ['Surface', '210 m²']
+    ],
+    amenities: ['Patio fleuri', 'Piscine chaufféee', 'Petit-déjeuner maison', 'Toit terrasse', 'Wi-Fi fibre', 'Climatisation'],
+    localSpots: [
+      'A 6 minutes à pied de Jemaa el-Fna et des souks principaux.',
+      'Quartier idéal pour découvrir les artisans, les cafes discrets et les rooftops de la vieille ville.',
+      'Acces facile en voiture jusqu au point de depose le plus proche de la ruelle.'
+    ],
+    coords: [31.6258, -7.9892],
+    mapLabel: 'Ruelle calme, à quelques minutes des souks et de la place Jemaa el-Fna.',
+    gradient: 'linear-gradient(135deg, rgba(196, 98, 45, 0.9), rgba(97, 42, 18, 0.92))',
+    photos: [
+      { label: 'Patio', image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Salon', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Suite', image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Terrasse', image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80' }
+    ]
+  },
+  'villa-oasis-bleue': {
+    type: 'Villa',
+    eyebrow: 'Villa ouverte sur l\'océan',
+    name: 'Villa Oasis Bleue',
+    location: 'Agadir, Bord de mer',
+    summary: "Une villa lumineuse avec jardin, piscine et grandes baies vitrees pour vivre la cote d'Agadir en toute tranquillite.",
+    description: "La Villa Oasis Bleue s'organise autour d'une grande piece de vie qui relie salon, salle a manger et terrasse exterieure. Le jardin plante d essences mediterraneennes prolonge naturellement les espaces interieurs.",
+    story: "Chaque chambre a été pensee pour le repos avec des materiaux naturels, des tonalites sable et une circulation fluide vers l'extérieur. La maison est parfaite pour un séjour au soleil en famille ou entre amis.",
+    price: '2 400 MAD <span>/ nuit</span>',
+    rating: '4.8',
+    reviews: '94 avis',
+    facts: [
+      ['Voyageurs', '8 personnes'],
+      ['Chambres', '4 chambres'],
+      ['Salles de bain', '4 bains'],
+      ['Surface', '340 m²']
+    ],
+    amenities: ['Piscine privee', 'Jardin tropical', 'Cuisine équipée', 'Coin barbecue', 'Stationnement', 'Vue mer'],
+    localSpots: [
+      'A quelques minutes de la corniche et des plages surveillees.',
+      'Un secteur calme avec acces rapide aux restaurants et clubs de surf.',
+      'Ideal pour alterner journees mer, golf et sorties en ville.'
+    ],
+    coords: [30.4106, -9.6049],
+    mapLabel: "Secteur residentiel à proximité de la plage, avec acces direct a la promenade d'Agadir.",
+    gradient: 'linear-gradient(135deg, rgba(29, 158, 117, 0.88), rgba(22, 64, 53, 0.92))',
+    photos: [
+      { label: 'Piscine', image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Terrasse', image: 'https://images.unsplash.com/photo-1505692952047-1a78307da8f2?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Séjour', image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Suite', image: 'https://images.unsplash.com/photo-1502672023488-70e25813eb80?auto=format&fit=crop&w=1200&q=80' }
+    ]
+  },
+  'appartement-vue-mer': {
+    type: 'Appartement',
+    eyebrow: 'Adresse urbaine et lumineuse',
+    name: 'Appartement Vue Mer',
+    location: 'Casablanca, Maarif',
+    summary: 'Un appartement contemporain pour séjourner au centre de Casablanca, entre vie urbaine, balcon et horizon marin.',
+    description: "L'appartement offre un plan fluide, une belle luminosite et un balcon pour prendre l'air en fin de journee. Les finitions sont sobres, confortables et pensees pour les courts comme les longs séjours.",
+    story: "Le quartier du Maarif te place entre commerces, bureaux, cafes et acces rapides vers le front de mer. C'est une base pratique pour explorer Casablanca sans sacrifier le confort.",
+    price: '620 MAD <span>/ nuit</span>',
+    rating: '4.7',
+    reviews: '62 avis',
+    facts: [
+      ['Voyageurs', '4 personnes'],
+      ['Chambres', '2 chambres'],
+      ['Salles de bain', '2 bains'],
+      ['Surface', '118 m²']
+    ],
+    amenities: ['Balcon', 'Ascenseur', 'Cuisine ouverte', 'Wi-Fi rapide', 'Parking', 'Espace de travail'],
+    localSpots: [
+      'A quelques minutes des boutiques, restaurants et cafes du Maarif.',
+      'Connexion rapide vers la corniche, Anfa et le tramway.',
+      'Parfait pour un séjour professionnel ou un city break.'
+    ],
+    coords: [33.5791, -7.6401],
+    mapLabel: 'Appartement situe dans le quartier du Maarif, proche des grands axes et des bonnes adresses de Casablanca.',
+    gradient: 'linear-gradient(135deg, rgba(83, 74, 183, 0.88), rgba(43, 37, 93, 0.92))',
+    photos: [
+      { label: 'Salon', image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Balcon', image: 'https://images.unsplash.com/photo-1505692952047-1a78307da8f2?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Chambre', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Cuisine', image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80' }
+    ]
+  },
+  'dar-bleu-des-arts': {
+    type: 'Maison',
+    eyebrow: "Maison d'artiste a Essaouira",
+    name: 'Dar Bleu des Arts',
+    location: 'Essaouira, Medina',
+    summary: 'Une maison de charme avec terrasse, hammam et details artisanaux, parfaite pour vivre Essaouira dans une ambiance douce et creative.',
+    description: "Dar Bleu des Arts marie murs clairs, bois naturel, textiles sobres et touches d'artisanat local. La circulation verticale mene vers une terrasse panoramique pensée pour les repas et les fins de journee.",
+    story: "Le hammam prive et les salons intimistes donnent a cette maison une atmosphere contemplative. Elle conviendra aux voyageurs qui cherchent le calme tout en restant proches du port, des galeries et de la plage.",
+    price: '980 MAD <span>/ nuit</span>',
+    rating: '4.9',
+    reviews: '211 avis',
+    facts: [
+      ['Voyageurs', '5 personnes'],
+      ['Chambres', '3 chambres'],
+      ['Salles de bain', '2 bains'],
+      ['Surface', '190 m²']
+    ],
+    amenities: ['Terrasse sur les toits', 'Hammam', 'Coin lecture', 'Cuisine équipée', 'Wi-Fi', 'Cheminee decorative'],
+    localSpots: [
+      "A 4 minutes du port historique et des remparts d'Essaouira.",
+      'Environnement vivant avec artisans, galeries et coffee shops accessibles à pied.',
+      'Un excellent point de départ pour les balades sur la plage et dans la Medina.'
+    ],
+    coords: [31.5116, -9.7706],
+    mapLabel: 'Maison cachee dans les ruelles de la Medina, tout près du port et des remparts.',
+    gradient: 'linear-gradient(135deg, rgba(158, 75, 31, 0.88), rgba(98, 57, 24, 0.94))',
+    photos: [
+      { label: 'Salon', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Terrasse', image: 'https://images.unsplash.com/photo-1505692952047-1a78307da8f2?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Chambre', image: 'https://images.unsplash.com/photo-1502672023488-70e25813eb80?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Hammam', image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80' }
+    ]
+  },
+  'riad-laaroussa': {
+    type: 'Riad',
+    eyebrow: 'Escapade patrimoniale a Fes',
+    name: 'Riad Laaroussa',
+    location: 'Fes, Medina',
+    summary: 'Un grand riad au decor zellige et aux volumes généreux, idéal pour vivre le patrimoine de Fes dans un cadre serein.',
+    description: 'Le riad met en avant les details architecturaux de Fes: fontaine centrale, stucs, menuiseries traditionnelles et salons a la fois ouverts et enveloppants.',
+    story: 'Chaque espace a été imagine pour accueillir aussi bien un séjour familial qu un voyage plus contemplatif. Les terrasses offrent des vues superbes sur les toits de la Medina et la lumiere du matin.',
+    price: '1 100 MAD <span>/ nuit</span>',
+    rating: '5.0',
+    reviews: '47 avis',
+    facts: [
+      ['Voyageurs', '10 personnes'],
+      ['Chambres', '5 chambres'],
+      ['Salles de bain', '5 bains'],
+      ['Surface', '360 m²']
+    ],
+    amenities: ['Fontaine', 'Terrasses', 'Petit-déjeuner', 'Suite familiale', 'Wi-Fi', 'Conciergerie'],
+    localSpots: [
+      'A proximité des medersas, fondouks et tanneries historiques.',
+      'Le quartier permet de vivre Fes à pied, sans perdre la sensation de refuge au retour.',
+      'Service de guide ou transfert facilement organisable depuis la Medina.'
+    ],
+    coords: [34.0637, -4.9765],
+    mapLabel: "Riad situe dans la Medina de Fes, proche des grands points d'intérêt historiques.",
+    gradient: 'linear-gradient(135deg, rgba(139, 58, 20, 0.9), rgba(82, 35, 17, 0.94))',
+    photos: [
+      { label: 'Patio', image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Salon', image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Suite', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Terrasse', image: 'https://images.unsplash.com/photo-1505692952047-1a78307da8f2?auto=format&fit=crop&w=1200&q=80' }
+    ]
+  },
+  'villa-cap-spartel': {
+    type: 'Villa',
+    eyebrow: 'Villa panoramique au nord',
+    name: 'Villa Cap Spartel',
+    location: 'Tanger, Montagne',
+    summary: 'Une villa de grand confort entre pins, lumiere atlantique et vues ouvertes sur le detroit, pour un séjour spacieux et elegant.',
+    description: "La villa combine architecture ample, ouvertures vers l'extérieur et materiaux doux. Les espaces de reception donnent directement sur la terrasse, la piscine et les vues lointaines.",
+    story: "Le secteur du Cap Spartel permet de rester proche de la nature tout en rejoignant rapidement Tanger, les plages et les bonnes tables. La maison se prete aussi bien aux vacances familiales qu'aux retraites creatives.",
+    price: '1 800 MAD <span>/ nuit</span>',
+    rating: '4.8',
+    reviews: '76 avis',
+    facts: [
+      ['Voyageurs', '12 personnes'],
+      ['Chambres', '6 chambres'],
+      ['Salles de bain', '5 bains'],
+      ['Surface', '420 m²']
+    ],
+    amenities: ['Piscine', 'Vue detroit', 'Grand jardin', 'Salon exterieur', 'Parking', 'Cuisine familiale'],
+    localSpots: [
+      'A quelques minutes du phare du Cap Spartel et des plages sauvages.',
+      "Vue idéale pour profiter des couchers de soleil sur l'Atlantique.",
+      'Bon equilibre entre intimite, air marin et acces rapide vers la ville.'
+    ],
+    coords: [35.7855, -5.9368],
+    mapLabel: "Villa nichee dans les hauteurs de Tanger, à proximité du Cap Spartel et des plages.",
+    gradient: 'linear-gradient(135deg, rgba(26, 74, 58, 0.88), rgba(18, 43, 38, 0.94))',
+    photos: [
+      { label: 'Piscine', image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Terrasse', image: 'https://images.unsplash.com/photo-1505692952047-1a78307da8f2?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Séjour', image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Suite', image: 'https://images.unsplash.com/photo-1502672023488-70e25813eb80?auto=format&fit=crop&w=1200&q=80' }
+    ]
+  },
+  'camp-merzouga-etoiles': {
+    type: 'Camp',
+    eyebrow: 'Nuit saharienne sous les etoiles',
+    name: 'Camp Merzouga Etoiles',
+    location: 'Merzouga, Sahara',
+    summary: 'Un camp elegant au bord des dunes pour vivre Merzouga entre silence, ciel immense et hospitalite desertique.',
+    description: 'Le camp propose de grandes tentes amenagees avec literie confortable, coin salon, salle de bain privative et details artisanaux inspires du Sud marocain. Les espaces communs s ouvrent sur les dunes pour les repas, le the et les soirees autour du feu.',
+    story: 'Au lever du soleil, les couleurs changent sur l erg et le camp devient un point de depart ideal pour une balade en dromadaire, une excursion en 4x4 ou simplement une parenthese calme loin de la ville. C est une adresse pensee pour une experience immersive sans renoncer au confort.',
+    price: '1 350 MAD <span>/ nuit</span>',
+    rating: '4.9',
+    reviews: '83 avis',
+    facts: [
+      ['Voyageurs', '4 personnes'],
+      ['Tentes', '2 suites nomades'],
+      ['Salles de bain', '2 bains'],
+      ['Experience', 'Feu de camp']
+    ],
+    amenities: ['Diner sous les etoiles', 'Petit-dejeuner berbere', 'Salle de bain privee', 'Balade a dos de dromadaire', 'Coin feu', 'Transfert en 4x4'],
+    localSpots: [
+      'Installe au pied des dunes de l Erg Chebbi, a quelques minutes du village de Merzouga.',
+      'Zone ideale pour admirer le coucher et le lever du soleil sans pollution lumineuse.',
+      'Depart facile pour les excursions desert, musique gnawa et bivouacs prives.'
+    ],
+    coords: [31.0994, -4.0121],
+    mapLabel: 'Camp situe pres des grandes dunes de Merzouga, avec acces direct a l Erg Chebbi.',
+    gradient: 'linear-gradient(135deg, rgba(176, 96, 64, 0.9), rgba(58, 32, 16, 0.94))',
+    photos: [
+      { label: 'Tente principale', image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Salon nomade', image: 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Dunes', image: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1200&q=80' },
+      { label: 'Soiree au camp', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80' }
+    ]
+  }
+};
+
+const sharedProperties = Object.fromEntries(
+  window.DarNaStatic.getMergedProperties().map(property => [
+    property.slug,
+    {
+      type: property.type,
+      eyebrow: property.eyebrow,
+      name: property.name,
+      location: property.location,
+      summary: property.summary,
+      description: property.description,
+      story: property.story,
+      price: `${window.DarNaStatic.formatMoney(property.price)} <span>${window.DarNaStatic.getPriceSuffix(property.priceUnit)}</span>`,
+      rating: String(property.rating || 0),
+      reviews: property.reviews,
+      facts: Array.isArray(property.facts) ? property.facts : [],
+      amenities: Array.isArray(property.amenities) ? property.amenities : [],
+      localSpots: Array.isArray(property.localSpots) ? property.localSpots : [],
+      coords: Array.isArray(property.coords) ? property.coords : [31.7917, -7.0926],
+      mapLabel: property.mapLabel || property.location || 'Maroc',
+      gradient: property.gradient,
+      photos: Array.isArray(property.photos) ? property.photos : []
+    }
+  ])
+);
+
+Object.assign(properties, sharedProperties);
+
+const params = new URLSearchParams(window.location.search);
+const requestedSlug = params.get('slug');
+const defaultSlug = 'riad-al-baraka';
+let currentSlug = properties[requestedSlug] ? requestedSlug : defaultSlug;
+let property = properties[currentSlug] || properties[defaultSlug];
+let currentPhotos = property.photos || [];
+let activePhotoIndex = 0;
+
+if (requestedSlug && !properties[requestedSlug]) {
+  document.getElementById('alertBox').classList.add('show');
+}
+
+function setBackground(target, photo, gradient) {
+  target.style.background = `${gradient}, center/cover no-repeat url("${photo.image}")`;
+}
+
+function initReveal() {
+  const items = Array.from(document.querySelectorAll('[data-reveal]'));
+
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(item => item.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, {
+    rootMargin: '0px 0px -12% 0px',
+    threshold: 0.12
+  });
+
+  items.forEach(item => observer.observe(item));
+}
+
+function renderGallery() {
+  const main = document.getElementById('galleryMain');
+  const thumbs = document.getElementById('galleryThumbs');
+  const activePhoto = currentPhotos[activePhotoIndex] || currentPhotos[0];
+
+  setBackground(main, activePhoto, property.gradient);
+  document.getElementById('galleryCaption').textContent = activePhoto.label;
+  thumbs.innerHTML = '';
+
+  currentPhotos.forEach((photo, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `thumb-btn${index === activePhotoIndex ? ' is-active' : ''}`;
+    button.setAttribute('data-label', photo.label);
+    button.setAttribute('aria-label', `Afficher ${photo.label}`);
+    setBackground(button, photo, property.gradient);
+    button.addEventListener('click', () => {
+      activePhotoIndex = index;
+      renderGallery();
+    });
+    thumbs.appendChild(button);
+  });
+}
+
+function renderFacts() {
+  const factsGrid = document.getElementById('factsGrid');
+  factsGrid.innerHTML = '';
+  property.facts.forEach(([label, value]) => {
+    const card = document.createElement('div');
+    card.className = 'fact-card';
+    card.innerHTML = `<div class="fact-label">${label}</div><div class="fact-value">${value}</div>`;
+    factsGrid.appendChild(card);
+  });
+}
+
+function renderAmenities() {
+  const list = document.getElementById('amenitiesList');
+  list.innerHTML = '';
+  property.amenities.forEach(item => {
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.textContent = item;
+    list.appendChild(chip);
+  });
+}
+
+function renderLocalArea() {
+  const localList = document.getElementById('localList');
+  localList.innerHTML = '';
+  property.localSpots.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'local-item';
+    row.innerHTML = `<span class="local-dot"></span><p>${item}</p>`;
+    localList.appendChild(row);
+  });
+}
+
+function renderMeta() {
+  const heroMeta = document.getElementById('heroMeta');
+  heroMeta.innerHTML = '';
+  [property.type, `${property.rating} / 5`, property.reviews, property.facts[0][1], property.facts[1][1]].forEach(value => {
+    const pill = document.createElement('span');
+    pill.className = 'meta-pill';
+    pill.textContent = value;
+    heroMeta.appendChild(pill);
+  });
+}
+
+function renderMap() {
+  const [lat, lng] = property.coords;
+  document.getElementById('property2Map').src = `https://www.google.com/maps?q=${lat},${lng}&z=14&output=embed`;
+  document.getElementById('property2MapLink').href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+  document.getElementById('map2Caption').textContent = property.mapLabel;
+  document.getElementById('map2Badge').textContent = `Position: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+}
+
+function renderProperty() {
+  const heroPhoto = currentPhotos[0]?.image || '';
+
+  document.title = `${property.name} | DarNa`;
+  document.getElementById('topChip').textContent = property.type;
+  document.getElementById('property2Eyebrow').textContent = property.eyebrow;
+  document.getElementById('property2Name').textContent = property.name;
+  document.getElementById('property2Location').textContent = property.location;
+  document.getElementById('property2Summary').textContent = property.summary;
+  document.getElementById('property2Description').textContent = property.description;
+  document.getElementById('property2Story').textContent = property.story;
+  document.getElementById('property2Price').innerHTML = property.price;
+  document.getElementById('booking2Summary').textContent = `${property.name} est situé à ${property.location} et accueille ${property.facts[0][1].toLowerCase()}. La carte ci-contre te permet de voir immédiatement où se trouve le logement.`;
+  document.getElementById('reserve2Btn').href = `reservation.html?slug=${encodeURIComponent(currentSlug)}`;
+  document.getElementById('backToListings2').href = 'index.html#stays';
+  document.getElementById('heroCard').style.background = heroPhoto
+    ? `linear-gradient(120deg, rgba(18, 12, 9, 0.72), rgba(18, 12, 9, 0.24) 48%, rgba(196, 98, 45, 0.3)), ${property.gradient}, center/cover no-repeat url("${heroPhoto}")`
+    : `radial-gradient(circle at 78% 20%, rgba(255, 255, 255, 0.2), transparent 24%), ${property.gradient}`;
+
+  renderMeta();
+  renderGallery();
+  renderFacts();
+  renderAmenities();
+  renderLocalArea();
+  renderMap();
+}
+
+renderProperty();
+initReveal();
+</script>
+</body>
+</html>

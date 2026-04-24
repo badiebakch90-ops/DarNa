@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<!--
+  ─────────────────────────────────────────────────────────────
+    DarNa — Plateforme de location authentique au Maroc 🇲🇦
+    Author    : Abdelbadie Abkhich (@badiebakch90-ops)
+    Original  : https://github.com/badiebakch90-ops/DarNa
+    Copyright : © 2026 Abdelbadie Abkhich — All rights reserved
+    License   : See LICENSE file
+  ─────────────────────────────────────────────────────────────
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarNa Admin | Dashboard</title>
+<meta name="theme-color" content="#C4622D">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23C4622D'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='58' font-weight='600' text-anchor='middle' fill='%23FDFAF6'%3ED%3C/text%3E%3C/svg%3E">
+<script>
+  (function () {
+    try {
+      if (!sessionStorage.getItem("darnaAdminSession")) {
+        window.location.replace("./admin.html");
+        return;
+      }
+
+      var theme = localStorage.getItem("darna-theme");
+      var language = localStorage.getItem("darna-language") || "fr";
+
+      if (theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      document.documentElement.lang = language;
+      document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+    } catch (error) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./index.html">Dar<em>Na</em></a>
+    <!-- Keep all action controls in one flex area so they can wrap cleanly on mobile. -->
+    <div class="topbar-actions">
+      <div class="language-switcher" role="group" aria-label="Language switcher">
+        <button class="language-btn" type="button" data-language-option="fr">FR</button>
+        <button class="language-btn" type="button" data-language-option="en">EN</button>
+        <button class="language-btn" type="button" data-language-option="ar">AR</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle="text"></button>
+      <button class="ghost-btn topbar-logout" type="button" id="logoutButton" data-i18n="logout"></button>
+    </div>
+  </header>
+
+  <main class="admin-shell">
+    <section class="panel">
+      <div class="panel-kicker" data-i18n="dashboard_kicker"></div>
+      <h1 class="panel-title" data-i18n="dashboard_title"></h1>
+      <p class="copy" data-i18n="dashboard_copy"></p>
+
+      <div class="helper-row">
+        <span class="helper-chip" data-i18n="status_storage"></span>
+        <span class="helper-chip" data-i18n="status_session"></span>
+      </div>
+    </section>
+
+    <div class="dashboard-grid" style="margin-top: 24px;">
+      <section class="panel">
+        <div class="panel-kicker" data-i18n="add_panel_kicker"></div>
+        <h2 class="panel-title" style="font-size: 42px;" data-i18n="add_panel_title"></h2>
+        <p class="copy" data-i18n="add_panel_copy"></p>
+
+        <div class="status-box" id="dashboardStatus" hidden></div>
+
+        <form id="propertyForm">
+          <input id="propertyEditSlug" name="editSlug" type="hidden" value="">
+          <div class="form-grid">
+            <div class="field full">
+              <label class="label" for="propertyTitle" data-i18n="field_title"></label>
+              <input class="input" id="propertyTitle" name="title" type="text" required data-i18n-placeholder="field_title_placeholder">
+            </div>
+
+            <div class="field">
+              <label class="label" for="propertyPrice" data-i18n="field_price"></label>
+              <input class="input" id="propertyPrice" name="price" type="number" min="1" required data-i18n-placeholder="field_price_placeholder">
+            </div>
+
+            <div class="field">
+              <label class="label" for="propertyType" data-i18n="field_type"></label>
+              <select class="select" id="propertyType" name="type" required></select>
+            </div>
+
+            <div class="field">
+              <label class="label" for="propertyCity" data-i18n="field_city"></label>
+              <input class="input" id="propertyCity" name="city" type="text" required data-i18n-placeholder="field_city_placeholder">
+            </div>
+
+            <div class="field">
+              <label class="label" for="propertyNeighborhood" data-i18n="field_neighborhood"></label>
+              <input class="input" id="propertyNeighborhood" name="neighborhood" type="text" required data-i18n-placeholder="field_neighborhood_placeholder">
+            </div>
+
+            <div class="field">
+              <label class="label" for="propertyRooms" data-i18n="field_rooms"></label>
+              <input class="input" id="propertyRooms" name="rooms" type="number" min="1" required data-i18n-placeholder="field_rooms_placeholder">
+            </div>
+
+            <div class="field">
+              <label class="label" for="propertySurface" data-i18n="field_surface"></label>
+              <input class="input" id="propertySurface" name="surface" type="number" min="1" required data-i18n-placeholder="field_surface_placeholder">
+            </div>
+
+            <div class="field full">
+              <label class="label" for="propertyImageUrl" data-i18n="field_image"></label>
+              <input class="input" id="propertyImageUrl" name="imageUrl" type="url" required data-i18n-placeholder="field_image_placeholder">
+            </div>
+
+            <div class="field full">
+              <label class="label" for="propertyDescription" data-i18n="field_description"></label>
+              <textarea class="textarea" id="propertyDescription" name="description" required data-i18n-placeholder="field_description_placeholder"></textarea>
+            </div>
+          </div>
+
+          <div class="panel-actions">
+            <button class="primary-btn" id="propertySubmitButton" type="submit" data-i18n="add_submit"></button>
+            <button class="ghost-btn" id="propertyCancelButton" type="button" data-i18n="add_cancel" hidden></button>
+            <a class="ghost-btn" href="./index.html" data-i18n="back_home"></a>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="panel-kicker" data-i18n="list_kicker"></div>
+        <h2 class="panel-title" style="font-size: 42px;" data-i18n="list_title"></h2>
+        <p class="copy" data-i18n="list_copy"></p>
+
+        <div class="property-list" id="dashboardPropertyList"></div>
+        <div class="empty-state" id="dashboardEmptyState" data-i18n="list_empty" hidden></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Charge la config admin LOCALE si disponible (fichier non commit, non deploye).
+       En production (Netlify), ce fichier n'existe pas, donc l'admin reste desactive. -->
+  <script src="./admin-config.local.js" onerror="this.remove()"></script>
+  <script src="./darna-static.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const DarNa = window.DarNaStatic;
+
+      if (!DarNa.isAdminAuthenticated()) {
+        window.location.replace("./admin.html");
+        return;
+      }
+
+      const propertyForm = document.getElementById("propertyForm");
+      const propertyType = document.getElementById("propertyType");
+      const editSlugInput = document.getElementById("propertyEditSlug");
+      const propertyList = document.getElementById("dashboardPropertyList");
+      const emptyState = document.getElementById("dashboardEmptyState");
+      const statusBox = document.getElementById("dashboardStatus");
+      const logoutButton = document.getElementById("logoutButton");
+      const submitButton = document.getElementById("propertySubmitButton");
+      const cancelButton = document.getElementById("propertyCancelButton");
+      let statusKey = "";
+      let statusValues = {};
+
+      function showStatus(key, values) {
+        statusKey = key || "";
+        statusValues = values || {};
+        render();
+      }
+
+      function renderTypeOptions() {
+        const currentValue = propertyType.value;
+        propertyType.innerHTML = DarNa.getAdminTypeOptions().map(option => {
+          return `<option value="${DarNa.escapeHtml(option.value)}">${DarNa.escapeHtml(option.label)}</option>`;
+        }).join("");
+
+        if (currentValue) {
+          propertyType.value = currentValue;
+        }
+      }
+
+      function resetFormState() {
+        propertyForm.reset();
+        editSlugInput.value = "";
+        propertyType.value = "apartment";
+        submitButton.dataset.i18n = "add_submit";
+        cancelButton.hidden = true;
+      }
+
+      function fillForm(item) {
+        document.getElementById("propertyTitle").value = item.name || "";
+        document.getElementById("propertyPrice").value = item.price || "";
+        document.getElementById("propertyCity").value = item.city || "";
+        document.getElementById("propertyNeighborhood").value = item.neighborhood || "";
+        document.getElementById("propertyType").value = item.typeKey || item.type || "apartment";
+        document.getElementById("propertyRooms").value = item.rooms || 1;
+        document.getElementById("propertySurface").value = item.surface || 1;
+        document.getElementById("propertyImageUrl").value = item.imageUrl || item.thumbnailImage || "";
+        document.getElementById("propertyDescription").value = item.description || item.summary || "";
+        editSlugInput.value = item.source === "local" ? item.slug : "";
+        submitButton.dataset.i18n = item.source === "local" ? "update_submit" : "add_submit";
+        cancelButton.hidden = false;
+        render();
+        propertyForm.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function renderList() {
+        const language = DarNa.getLanguage();
+        const items = DarNa.getDashboardProperties();
+        propertyList.innerHTML = "";
+
+        if (!items.length) {
+          emptyState.hidden = false;
+          return;
+        }
+
+        emptyState.hidden = true;
+
+        propertyList.innerHTML = items.map(item => {
+          const typeLabel = DarNa.getTypeLabel(item.typeKey || item.type, language);
+          const location = [item.city, item.neighborhood].filter(Boolean).join(", ") || DarNa.t("list_location_fallback");
+          const image = DarNa.escapeHtml(item.imageUrl || item.thumbnailImage || "");
+          const price = DarNa.escapeHtml(DarNa.formatMoney(item.price));
+          const priceSuffix = DarNa.escapeHtml(DarNa.getPriceSuffix(item.priceUnit || "month", language));
+          const rooms = DarNa.escapeHtml(DarNa.t("list_rooms", { count: item.rooms }, language));
+          const surface = DarNa.escapeHtml(DarNa.t("list_surface", { count: item.surface }, language));
+          const name = DarNa.escapeHtml(item.name);
+          const description = DarNa.escapeHtml(item.description || item.summary || "");
+          const sourceLabel = DarNa.escapeHtml(DarNa.t(item.source === "local" ? "list_source_local" : "list_source_base", {}, language));
+          const demoLabel = DarNa.escapeHtml(DarNa.t("list_source_demo", {}, language));
+          const deleteDisabled = item.source !== "local" ? " disabled aria-disabled=\"true\"" : "";
+
+          return `
+            <article class="property-item">
+              <div class="property-media" style="background-image: linear-gradient(135deg, rgba(196, 98, 45, 0.2), rgba(21, 15, 11, 0.32)), url('${image}')"></div>
+              <div class="property-copy">
+                <div class="property-topline">
+                  <div>
+                    <div class="panel-kicker" style="margin-bottom: 6px;">${DarNa.escapeHtml(typeLabel)}</div>
+                    <h3 class="property-name">${name}</h3>
+                  </div>
+                  <span class="helper-chip">${price} ${priceSuffix}</span>
+                </div>
+                <p class="property-meta">${DarNa.escapeHtml(location)}</p>
+                <p class="property-meta">${description}</p>
+                <div class="property-tags">
+                  <span class="property-tag">${sourceLabel}</span>
+                  <span class="property-tag">${rooms}</span>
+                  <span class="property-tag">${surface}</span>
+                  <span class="property-tag">${demoLabel}</span>
+                </div>
+                <div class="property-actions">
+                  <a class="ghost-btn" href="${DarNa.propertyLink(item.slug)}" target="_blank" rel="noreferrer">${DarNa.escapeHtml(DarNa.t('list_preview', {}, language))}</a>
+                  <button class="ghost-btn" type="button" data-edit-slug="${DarNa.escapeHtml(item.slug)}">${DarNa.escapeHtml(DarNa.t("list_edit", {}, language))}</button>
+                  <button class="danger-btn" type="button" data-delete-slug="${DarNa.escapeHtml(item.slug)}" data-property-name="${name}" data-source="${DarNa.escapeHtml(item.source)}"${deleteDisabled}>${DarNa.escapeHtml(DarNa.t("list_delete", {}, language))}</button>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join("");
+      }
+
+      function render() {
+        DarNa.applySavedPreferences();
+        DarNa.applyAdminTranslations(document);
+        DarNa.syncThemeButtons(document);
+        DarNa.syncLanguageButtons(document);
+        renderTypeOptions();
+        renderList();
+
+        if (statusKey) {
+          statusBox.hidden = false;
+          statusBox.textContent = DarNa.t(statusKey, statusValues);
+        } else {
+          statusBox.hidden = true;
+          statusBox.textContent = "";
+        }
+      }
+
+      DarNa.bindThemeButtons(document, render);
+      DarNa.bindLanguageButtons(document, render);
+      resetFormState();
+      render();
+
+      propertyForm.addEventListener("submit", event => {
+        event.preventDefault();
+
+        if (!propertyForm.reportValidity()) {
+          return;
+        }
+
+        const formData = new FormData(propertyForm);
+        const payload = {
+          title: formData.get("title"),
+          price: formData.get("price"),
+          city: formData.get("city"),
+          neighborhood: formData.get("neighborhood"),
+          type: formData.get("type"),
+          rooms: formData.get("rooms"),
+          surface: formData.get("surface"),
+          imageUrl: formData.get("imageUrl"),
+          description: formData.get("description")
+        };
+        const editingSlug = editSlugInput.value.trim();
+        const savedProperty = editingSlug
+          ? DarNa.updateProperty(editingSlug, payload)
+          : DarNa.addProperty(payload);
+
+        resetFormState();
+        showStatus(editingSlug ? "edit_success" : "add_success", { name: savedProperty.name });
+      });
+
+      propertyList.addEventListener("click", event => {
+        const editButton = event.target.closest("[data-edit-slug]");
+        if (editButton) {
+          const item = DarNa.getDashboardProperties().find(entry => entry.slug === editButton.dataset.editSlug);
+
+          if (!item) {
+            return;
+          }
+
+          fillForm(item);
+          showStatus(item.source === "local" ? "edit_notice_local" : "edit_notice_base", { name: item.name });
+          return;
+        }
+
+        const deleteButton = event.target.closest("[data-delete-slug]");
+        if (!deleteButton) {
+          return;
+        }
+
+        if ((deleteButton.dataset.source || "") !== "local") {
+          showStatus("delete_blocked");
+          return;
+        }
+
+        const slug = deleteButton.dataset.deleteSlug || "";
+        const name = deleteButton.dataset.propertyName || "";
+        DarNa.deleteProperty(slug);
+        if (editSlugInput.value === slug) {
+          resetFormState();
+        }
+        showStatus("delete_success", { name });
+      });
+
+      cancelButton.addEventListener("click", () => {
+        resetFormState();
+        statusKey = "";
+        statusValues = {};
+        render();
+      });
+
+      logoutButton.addEventListener("click", () => {
+        DarNa.logoutAdmin();
+        window.location.href = "./admin.html";
+      });
+    });
+  </script>
+</body>
+</html>

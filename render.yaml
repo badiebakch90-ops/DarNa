@@ -1,0 +1,91 @@
+# ════════════════════════════════════════════════════════════
+#   render.yaml — Configuration Render pour DarNa Laravel
+#   Documentation : https://render.com/docs/yaml-spec
+# ════════════════════════════════════════════════════════════
+
+databases:
+  - name: darna-db
+    databaseName: darna_production
+    user: darna_user
+    plan: free                  # 1 GB PostgreSQL gratuit
+    region: frankfurt           # Plus proche du Maroc
+
+services:
+  - type: web
+    name: darna-laravel
+    runtime: docker
+    plan: free                  # Gratuit avec mise en veille apres 15 min
+    region: frankfurt
+    dockerContext: ./backend-laravel
+    dockerfilePath: ./backend-laravel/Dockerfile
+    healthCheckPath: /
+    envVars:
+      # Application
+      - key: APP_NAME
+        value: DarNa
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true     # Render genere automatiquement la cle Laravel
+      - key: APP_URL
+        sync: false             # A definir manuellement apres le deploy
+
+      # Database (auto-injectees depuis le service "darna-db")
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: darna-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: darna-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: darna-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: darna-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: darna-db
+          property: password
+
+      # Logs / cache / sessions (file-based, simple)
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: warning
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+
+      # Securite
+      - key: SECURITY_FORCE_HTTPS
+        value: true
+      - key: SESSION_SECURE_COOKIE
+        value: true
+      - key: TRUSTED_PROXIES
+        value: "*"
+      - key: ALLOW_PUBLIC_REGISTRATION
+        value: false
+
+      # CORS — pour que le static-preview Netlify puisse appeler l'API
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://eclectic-llama-da39dd.netlify.app
+
+      # Localisation
+      - key: APP_LOCALE
+        value: fr
+      - key: APP_FALLBACK_LOCALE
+        value: en
+      - key: BCRYPT_ROUNDS
+        value: 12

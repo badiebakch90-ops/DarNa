@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--
+  ─────────────────────────────────────────────────────────────
+    DarNa — Plateforme de location authentique au Maroc 🇲🇦
+    Author    : Abdelbadie Abkhich (@badiebakch90-ops)
+    Original  : https://github.com/badiebakch90-ops/DarNa
+    Copyright : © 2026 Abdelbadie Abkhich — All rights reserved
+    License   : See LICENSE file
+  ─────────────────────────────────────────────────────────────
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page introuvable | DarNa</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#C4622D">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23C4622D'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='58' font-weight='600' text-anchor='middle' fill='%23FDFAF6'%3ED%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background:
+      radial-gradient(circle at top right, rgba(196, 98, 45, 0.12), transparent 30%),
+      linear-gradient(180deg, #fbf4ec 0%, #FDFAF6 36%, #fffaf5 100%);
+    color: #2E2420;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .wrap { text-align: center; max-width: 540px; }
+  .emoji { font-size: 72px; margin-bottom: 24px; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+  .code {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 96px; font-weight: 600; line-height: 1;
+    color: #C4622D; letter-spacing: -2px; margin-bottom: 8px;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 38px; font-weight: 400; color: #1C1714;
+    margin-bottom: 16px;
+  }
+  h1 em { color: #C4622D; font-style: italic; }
+  p { font-size: 16px; color: #7A6A5E; line-height: 1.6; margin-bottom: 32px; }
+  .btn {
+    display: inline-block; padding: 14px 32px;
+    background: #1C1714; color: #FDFAF6;
+    border-radius: 40px; font-size: 14px; font-weight: 500;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .btn:hover { background: #C4622D; transform: translateY(-2px); }
+  .small {
+    margin-top: 40px; font-size: 13px; color: #7A6A5E;
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+  }
+  .small em { color: #C4622D; font-style: normal; font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="emoji">🌵</div>
+    <div class="code">404</div>
+    <h1>Cette <em>dar</em> n'existe pas</h1>
+    <p>La page que tu cherches a peut-etre ete deplacee, supprimee, ou n'a jamais existe. Reviens a l'accueil pour decouvrir nos plus beaux sejours au Maroc.</p>
+    <a href="/" class="btn">Retour a l'accueil</a>
+    <div class="small">Dar<em>Na</em> — Locations authentiques au Maroc</div>
+  </div>
+</body>
+</html>

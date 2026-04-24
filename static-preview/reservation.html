@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<!--
+  ─────────────────────────────────────────────────────────────
+    DarNa — Plateforme de location authentique au Maroc 🇲🇦
+    Author    : Abdelbadie Abkhich (@badiebakch90-ops)
+    Original  : https://github.com/badiebakch90-ops/DarNa
+    Copyright : © 2026 Abdelbadie Abkhich — All rights reserved
+    License   : See LICENSE file
+  ─────────────────────────────────────────────────────────────
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarNa | Reservation</title>
+<meta name="theme-color" content="#C4622D">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23C4622D'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='58' font-weight='600' text-anchor='middle' fill='%23FDFAF6'%3ED%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terracotta: #c4622d;
+    --terracotta-deep: #93451d;
+    --gold: #c9a84c;
+    --sand: #f5e6d3;
+    --sand-light: #f8efe6;
+    --ivory: #fdfaf6;
+    --charcoal: #1c1714;
+    --ink: #2e2420;
+    --muted: #77685d;
+    --border: rgba(196, 98, 45, 0.16);
+    --shadow-soft: 0 22px 60px rgba(28, 23, 20, 0.08);
+    --shadow-card: 0 12px 36px rgba(196, 98, 45, 0.14);
+    --radius-xl: 30px;
+    --radius-lg: 24px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Manrope', system-ui, sans-serif;
+  }
+
+  html.dark {
+    --sand: #2a1f18;
+    --sand-light: #1e1510;
+    --ivory: #150f0b;
+    --charcoal: #f5ede6;
+    --ink: #ede0d6;
+    --muted: #9a8a7e;
+    --border: rgba(196, 98, 45, 0.22);
+    --shadow-soft: 0 22px 60px rgba(0, 0, 0, 0.34);
+    --shadow-card: 0 12px 36px rgba(196, 98, 45, 0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at top right, rgba(196, 98, 45, 0.12), transparent 28%),
+      linear-gradient(180deg, #fbf4ec 0%, var(--ivory) 36%, #fffaf5 100%);
+  }
+  html.dark body {
+    background:
+      radial-gradient(circle at top right, rgba(196, 98, 45, 0.12), transparent 28%),
+      linear-gradient(180deg, #1a100a 0%, var(--ivory) 36%, #110c08 100%);
+  }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea, select {
+    font: inherit;
+  }
+  button {
+    border: none;
+    cursor: pointer;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 36px;
+    background: rgba(253, 250, 246, 0.9);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 14px 34px rgba(28, 23, 20, 0.08);
+  }
+  html.dark .topbar { background: rgba(21, 15, 11, 0.92); }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .back-link:hover {
+    color: var(--terracotta);
+    transform: translateX(-2px);
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--charcoal);
+    flex-shrink: 0;
+  }
+  .brand em {
+    color: var(--terracotta);
+    font-style: normal;
+  }
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .theme-toggle {
+    min-width: 74px;
+    height: 40px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--sand);
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: transform 0.2s, border-color 0.2s, background 0.2s, color 0.2s;
+  }
+  .theme-toggle:hover {
+    transform: translateY(-1px);
+    border-color: var(--terracotta);
+  }
+  .top-chip {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--sand);
+    color: var(--terracotta);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .page {
+    width: min(1280px, calc(100% - 40px));
+    margin: 30px auto 60px;
+  }
+  .alert {
+    display: none;
+    margin-bottom: 18px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(201, 168, 76, 0.16);
+    color: #7a5a11;
+    border: 1px solid rgba(201, 168, 76, 0.26);
+  }
+  .alert.show { display: block; }
+
+  .booking-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(320px, 420px);
+    gap: 28px;
+    align-items: start;
+  }
+
+  .stack {
+    display: grid;
+    gap: 24px;
+  }
+  .panel {
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(196, 98, 45, 0.12);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  }
+  .panel:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 28px 68px rgba(28, 23, 20, 0.12);
+    border-color: rgba(196, 98, 45, 0.2);
+  }
+  html.dark .panel {
+    background: rgba(30, 21, 16, 0.95);
+  }
+  .panel-inner {
+    padding: 28px;
+  }
+  .panel-subtitle {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .panel-title {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 4vw, 50px);
+    color: var(--charcoal);
+    line-height: 1;
+  }
+  .copy {
+    margin-top: 14px;
+    line-height: 1.75;
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  .hero {
+    position: relative;
+    min-height: 320px;
+    background:
+      linear-gradient(135deg, rgba(20, 14, 10, 0.25), rgba(196, 98, 45, 0.35)),
+      center/cover no-repeat url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80');
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(21, 15, 11, 0.86) 10%, rgba(21, 15, 11, 0.12) 70%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(20, 14, 10, 0.42), rgba(20, 14, 10, 0.08) 48%, rgba(196, 98, 45, 0.16));
+    z-index: 0;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 30px;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: #fff;
+  }
+  .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    margin-bottom: 14px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .hero-location {
+    margin-top: 10px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.84);
+  }
+  .hero-summary {
+    max-width: 640px;
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.88);
+  }
+  .hero-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .fact-pill {
+    padding: 9px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    font-size: 12px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .field {
+    display: grid;
+    gap: 8px;
+  }
+  .field.full { grid-column: 1 / -1; }
+  .label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .input, .select, .textarea {
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid rgba(196, 98, 45, 0.18);
+    background: #fffaf6;
+    color: var(--charcoal);
+    padding: 15px 16px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+  html.dark .input,
+  html.dark .select,
+  html.dark .textarea {
+    background: #2a1f18;
+    border-color: rgba(196, 98, 45, 0.24);
+    color: var(--charcoal);
+  }
+  html.dark .input::placeholder,
+  html.dark .textarea::placeholder {
+    color: #9a8a7e;
+  }
+  .textarea {
+    min-height: 130px;
+    resize: vertical;
+  }
+  .input:focus, .select:focus, .textarea:focus {
+    border-color: var(--terracotta);
+    box-shadow: 0 0 0 3px rgba(196, 98, 45, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .helper-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .helper-chip {
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: var(--sand-light);
+    border: 1px solid rgba(196, 98, 45, 0.12);
+  }
+  html.dark .helper-chip {
+    background: #2a1f18;
+    border-color: rgba(196, 98, 45, 0.2);
+  }
+
+  .terms {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-top: 18px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 14px;
+  }
+  .terms input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: var(--terracotta);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .primary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 22px;
+    border-radius: 999px;
+    background: var(--charcoal);
+    color: #fff;
+    box-shadow: 0 16px 34px rgba(28, 23, 20, 0.18);
+    transition: transform 0.24s, background 0.24s, box-shadow 0.24s;
+  }
+  .primary-btn:hover {
+    transform: translateY(-2px);
+    background: var(--terracotta);
+  }
+  html.dark .primary-btn {
+    background: linear-gradient(135deg, #7c3718, #93451d);
+    color: #fff7f1;
+    box-shadow: 0 10px 30px rgba(196, 98, 45, 0.22);
+  }
+  html.dark .primary-btn:hover {
+    background: linear-gradient(135deg, #9a4a21, #c4622d);
+  }
+  .ghost-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 22px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--charcoal);
+    border: 1px solid rgba(196, 98, 45, 0.18);
+    transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+  }
+  .ghost-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(196, 98, 45, 0.32);
+    box-shadow: 0 14px 28px rgba(28, 23, 20, 0.12);
+  }
+  html.dark .ghost-btn {
+    background: #2a1f18;
+    border-color: rgba(196, 98, 45, 0.22);
+  }
+
+  .success-box {
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 20px;
+    background: rgba(29, 158, 117, 0.12);
+    color: #215944;
+    border: 1px solid rgba(29, 158, 117, 0.22);
+    line-height: 1.7;
+  }
+  .success-box.show { display: block; }
+  html.dark .success-box {
+    background: rgba(29, 158, 117, 0.16);
+    color: #9fe0c6;
+    border-color: rgba(29, 158, 117, 0.3);
+  }
+
+  .summary-card {
+    position: sticky;
+    top: 92px;
+    padding: 24px;
+    border-radius: var(--radius-xl);
+    background: linear-gradient(180deg, rgba(34, 24, 18, 0.98), rgba(22, 16, 12, 0.98));
+    color: #fff;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+  }
+  .summary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 28px 64px rgba(28, 23, 20, 0.24);
+  }
+  .summary-photo {
+    height: 220px;
+    border-radius: var(--radius-lg);
+    background:
+      linear-gradient(135deg, rgba(196, 98, 45, 0.25), rgba(21, 15, 11, 0.46)),
+      center/cover no-repeat url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80');
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .summary-head {
+    margin-top: 20px;
+  }
+  .summary-kicker {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .summary-name {
+    font-family: var(--font-display);
+    font-size: 36px;
+    line-height: 0.96;
+    margin-top: 10px;
+  }
+  .summary-location {
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 14px;
+  }
+  .summary-price {
+    margin-top: 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .summary-price strong {
+    font-size: 34px;
+    font-weight: 700;
+  }
+  .summary-price span {
+    color: rgba(255, 255, 255, 0.72);
+  }
+  .summary-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .summary-tag {
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 12px;
+  }
+  .totals {
+    margin-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 18px;
+    display: grid;
+    gap: 12px;
+  }
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 14px;
+  }
+  .total-row strong {
+    color: #fff;
+  }
+  .total-row.total {
+    font-size: 18px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .deposit-box {
+    margin-top: 18px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 13px;
+  }
+  .deposit-box strong { color: #fff; }
+
+  .policy-list {
+    margin-top: 20px;
+    display: grid;
+    gap: 10px;
+  }
+  .policy-item {
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.74);
+  }
+  html.dark .alert {
+    background: rgba(201, 168, 76, 0.12);
+    color: #e4cb7d;
+    border-color: rgba(201, 168, 76, 0.22);
+  }
+
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 1024px) {
+    .booking-layout {
+      grid-template-columns: 1fr;
+    }
+    .summary-card {
+      position: static;
+    }
+  }
+  @media (max-width: 720px) {
+    .topbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      padding: 16px 18px;
+      gap: 12px;
+    }
+    .topbar-actions {
+      gap: 8px;
+      justify-self: end;
+    }
+    .theme-toggle {
+      min-width: 60px;
+      height: 34px;
+      padding: 0 10px;
+      font-size: 10px;
+    }
+    .top-chip { display: none; }
+    .back-link {
+      gap: 6px;
+      font-size: 13px;
+    }
+    .back-link-label { display: none; }
+    .brand {
+      justify-self: center;
+      font-size: 24px;
+    }
+    .page { width: min(100% - 24px, 1280px); }
+    .hero-content { padding: 22px; }
+    .panel-inner { padding: 22px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .summary-name { font-size: 32px; }
+    .actions > * { width: 100%; }
+  }
+</style>
+<script>
+  (function() {
+    const saved = localStorage.getItem('darna-theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back-link" id="backToProperty" href="property.html">
+      <span>&larr;</span>
+      <span class="back-link-label">Retour a la fiche</span>
+    </a>
+    <a class="brand" href="index.html#top">Dar<em>Na</em></a>
+    <div class="topbar-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" title="Activer le mode nuit" aria-label="Activer le mode nuit">Nuit</button>
+      <div class="top-chip">Reservation</div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="alert" id="alertBox">Ce logement n'a pas ete trouve. Nous avons charge une option proche.</div>
+
+    <div class="booking-layout">
+      <div class="stack">
+        <section class="panel hero" id="heroPanel" data-reveal>
+          <div class="hero-content">
+            <div class="hero-kicker" id="bookingType">Sejour signature</div>
+            <h1 class="panel-title" id="bookingName">Riad Al Baraka</h1>
+            <div class="hero-location" id="bookingLocation"></div>
+            <p class="hero-summary" id="bookingSummary"></p>
+            <div class="hero-facts" id="heroFacts"></div>
+          </div>
+        </section>
+
+        <section class="panel" data-reveal style="--reveal-delay: 80ms;">
+          <div class="panel-inner">
+            <div class="panel-subtitle">Formulaire</div>
+            <h2 class="panel-title" style="font-size:40px;">Finaliser votre demande</h2>
+            <p class="copy">Renseigne tes dates, le nombre de voyageurs et tes coordonnees. Cette page prepare une demande de reservation complete pour le logement selectionne.</p>
+
+            <form id="reservationForm">
+              <div class="grid-2" style="margin-top:24px;">
+                <div class="field">
+                  <label class="label" for="arrivalInput">Arrivee</label>
+                  <input class="input" id="arrivalInput" name="arrival" type="date" required>
+                </div>
+                <div class="field">
+                  <label class="label" for="departureInput">Depart</label>
+                  <input class="input" id="departureInput" name="departure" type="date" required>
+                </div>
+                <div class="field">
+                  <label class="label" for="adultsInput">Adultes</label>
+                  <select class="select" id="adultsInput" name="adults">
+                    <option value="1">1 adulte</option>
+                    <option value="2" selected>2 adultes</option>
+                    <option value="3">3 adultes</option>
+                    <option value="4">4 adultes</option>
+                    <option value="5">5 adultes</option>
+                    <option value="6">6 adultes</option>
+                    <option value="8">8 adultes</option>
+                    <option value="10">10 adultes</option>
+                    <option value="12">12 adultes</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="label" for="childrenInput">Enfants</label>
+                  <select class="select" id="childrenInput" name="children">
+                    <option value="0" selected>0 enfant</option>
+                    <option value="1">1 enfant</option>
+                    <option value="2">2 enfants</option>
+                    <option value="3">3 enfants</option>
+                    <option value="4">4 enfants</option>
+                    <option value="5">5 enfants</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="label" for="firstNameInput">Prenom</label>
+                  <input class="input" id="firstNameInput" name="first_name" type="text" placeholder="Sara" required>
+                </div>
+                <div class="field">
+                  <label class="label" for="lastNameInput">Nom</label>
+                  <input class="input" id="lastNameInput" name="last_name" type="text" placeholder="Benali" required>
+                </div>
+                <div class="field">
+                  <label class="label" for="emailInput">Email</label>
+                  <input class="input" id="emailInput" name="email" type="email" placeholder="sara@email.com" required>
+                </div>
+                <div class="field">
+                  <label class="label" for="phoneInput">Telephone</label>
+                  <input class="input" id="phoneInput" name="phone" type="tel" placeholder="+212 6 12 34 56 78" required>
+                </div>
+                <div class="field full">
+                  <label class="label" for="notesInput">Message ou demande speciale</label>
+                  <textarea class="textarea" id="notesInput" name="notes" placeholder="Heure d'arrivee, allergies, lit bebe, transfert, anniversaire..."></textarea>
+                </div>
+              </div>
+
+              <div class="helper-row" id="helperRow">
+                <span class="helper-chip" id="capacityChip">Capacite: --</span>
+                <span class="helper-chip" id="ratingChip">Note: --</span>
+                <span class="helper-chip" id="reviewsChip">Avis: --</span>
+              </div>
+
+              <label class="terms">
+                <input id="termsInput" type="checkbox" required>
+                <span>Je confirme que mes informations sont correctes et j'accepte d'etre contacte pour verifier la disponibilite, le tarif final et les conditions du sejour.</span>
+              </label>
+
+              <div class="actions">
+                <button class="primary-btn" type="submit">Envoyer ma demande</button>
+                <a class="ghost-btn" id="seePropertyBtn" href="property.html">Revoir la fiche</a>
+              </div>
+            </form>
+
+            <div class="success-box" id="successBox"></div>
+          </div>
+        </section>
+      </div>
+
+      <aside class="summary-card" data-reveal style="--reveal-delay: 160ms;">
+        <div class="summary-photo" id="summaryPhoto"></div>
+        <div class="summary-head">
+          <div class="summary-kicker" id="summaryType">Logement</div>
+          <div class="summary-name" id="summaryProperty">Riad Al Baraka</div>
+          <div class="summary-location" id="summaryLocation"></div>
+          <div class="summary-price">
+            <strong id="nightlyPrice">0 MAD</strong>
+            <span>/ nuit</span>
+          </div>
+        </div>
+
+        <div class="summary-tags" id="summaryTags"></div>
+
+        <div class="totals">
+          <div class="total-row">
+            <span>Nuits</span>
+            <strong id="summaryNights">1</strong>
+          </div>
+          <div class="total-row">
+            <span>Voyageurs</span>
+            <strong id="summaryGuests">2</strong>
+          </div>
+          <div class="total-row">
+            <span>Tarif logement</span>
+            <strong id="summarySubtotal">0 MAD</strong>
+          </div>
+          <div class="total-row">
+            <span>Frais de service</span>
+            <strong id="summaryService">0 MAD</strong>
+          </div>
+          <div class="total-row">
+            <span>Taxes locales</span>
+            <strong id="summaryTax">0 MAD</strong>
+          </div>
+          <div class="total-row total">
+            <span>Total estime</span>
+            <strong id="summaryTotal">0 MAD</strong>
+          </div>
+        </div>
+
+        <div class="deposit-box">
+          Acompte suggere pour bloquer les dates: <strong id="depositAmount">0 MAD</strong><br>
+          <span id="dateRecap">Selectionne tes dates pour affiner le montant.</span>
+        </div>
+
+        <div class="policy-list">
+          <div class="policy-item">Confirmation manuelle par l'equipe DarNa apres verification de la disponibilite.</div>
+          <div class="policy-item">Le prix affiche ici est une estimation basee sur les dates et le nombre de voyageurs.</div>
+          <div class="policy-item">Les demandes de transfert, repas ou experiences peuvent etre ajoutees dans le message.</div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+<script src="./darna-static.js"></script>
+<script>
+const properties = {
+  'riad-al-baraka': {
+    type: 'Riad',
+    name: 'Riad Al Baraka',
+    location: 'Marrakech, Medina',
+    summary: 'Un riad chaleureux avec patio vegetal, bassin et terrasses privees pour vivre la Medina dans une ambiance calme et raffinee.',
+    nightlyRate: 850,
+    rating: '4.9',
+    reviews: '128 avis',
+    capacity: '6 personnes',
+    facts: ['3 suites', '3 bains', 'Patio fleuri'],
+    photo: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80'
+  },
+  'villa-oasis-bleue': {
+    type: 'Villa',
+    name: 'Villa Oasis Bleue',
+    location: 'Agadir, Bord de mer',
+    summary: 'Une villa lumineuse avec jardin tropical, piscine et grandes baies vitrees pour un sejour au soleil pres de la cote.',
+    nightlyRate: 2400,
+    rating: '4.8',
+    reviews: '94 avis',
+    capacity: '8 personnes',
+    facts: ['4 chambres', '4 bains', 'Vue mer'],
+    photo: 'https://images.unsplash.com/photo-1505692952047-1a78307da8f2?auto=format&fit=crop&w=1400&q=80'
+  },
+  'appartement-vue-mer': {
+    type: 'Appartement',
+    name: 'Appartement Vue Mer',
+    location: 'Casablanca, Maarif',
+    summary: 'Un appartement contemporain avec balcon, parking et base urbaine ideale pour profiter de Casablanca.',
+    nightlyRate: 620,
+    rating: '4.7',
+    reviews: '62 avis',
+    capacity: '4 personnes',
+    facts: ['2 chambres', '2 bains', 'Balcon'],
+    photo: 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1400&q=80'
+  },
+  'dar-bleu-des-arts': {
+    type: 'Maison',
+    name: 'Dar Bleu des Arts',
+    location: 'Essaouira, Medina',
+    summary: 'Une maison de charme avec terrasse, hammam et details artisanaux dans une ambiance douce et creative.',
+    nightlyRate: 980,
+    rating: '4.9',
+    reviews: '211 avis',
+    capacity: '5 personnes',
+    facts: ['3 chambres', '2 bains', 'Terrasse'],
+    photo: 'https://images.unsplash.com/photo-1502672023488-70e25813eb80?auto=format&fit=crop&w=1400&q=80'
+  },
+  'riad-laaroussa': {
+    type: 'Riad',
+    name: 'Riad Laaroussa',
+    location: 'Fes, Medina',
+    summary: 'Un grand riad patrimonial aux volumes genereux, fontaine centrale et terrasses ouvertes sur les toits de Fes.',
+    nightlyRate: 1100,
+    rating: '5.0',
+    reviews: '47 avis',
+    capacity: '10 personnes',
+    facts: ['5 chambres', '5 bains', 'Fontaine'],
+    photo: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1400&q=80'
+  },
+  'villa-cap-spartel': {
+    type: 'Villa',
+    name: 'Villa Cap Spartel',
+    location: 'Tanger, Montagne',
+    summary: 'Une villa panoramique entre pins, piscine et vue ouverte sur le detroit pour un sejour spacieux et elegant.',
+    nightlyRate: 1800,
+    rating: '4.8',
+    reviews: '76 avis',
+    capacity: '12 personnes',
+    facts: ['6 chambres', '5 bains', 'Piscine'],
+    photo: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80'
+  },
+  'camp-merzouga-etoiles': {
+    type: 'Camp',
+    name: 'Camp Merzouga Etoiles',
+    location: 'Merzouga, Sahara',
+    summary: 'Un camp elegant au bord des dunes pour vivre Merzouga entre silence, ciel immense et hospitalite desertique.',
+    nightlyRate: 1350,
+    rating: '4.9',
+    reviews: '83 avis',
+    capacity: '4 personnes',
+    facts: ['2 suites nomades', '2 bains', 'Feu de camp'],
+    photo: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80'
+  }
+};
+
+const sharedProperties = Object.fromEntries(
+  window.DarNaStatic.getMergedProperties().map(property => [
+    property.slug,
+    {
+      type: property.type,
+      name: property.name,
+      location: property.location,
+      summary: property.summary,
+      nightlyRate: Number(property.price || 0),
+      rating: String(property.rating || 0),
+      reviews: property.reviews,
+      capacity: property.facts?.[0]?.[1] || `${property.capacity || 1} personne(s)`,
+      facts: Array.isArray(property.facts) ? property.facts.slice(1).map(item => item[1]) : [],
+      photo: property.thumbnailImage || property.photos?.[0]?.image || ''
+    }
+  ])
+);
+
+Object.assign(properties, sharedProperties);
+
+const params = new URLSearchParams(window.location.search);
+const requestedSlug = params.get('slug');
+const defaultSlug = 'riad-al-baraka';
+let currentSlug = properties[requestedSlug] ? requestedSlug : defaultSlug;
+let property = properties[currentSlug] || properties[defaultSlug];
+
+const arrivalInput = document.getElementById('arrivalInput');
+const departureInput = document.getElementById('departureInput');
+const adultsInput = document.getElementById('adultsInput');
+const childrenInput = document.getElementById('childrenInput');
+const reservationForm = document.getElementById('reservationForm');
+const successBox = document.getElementById('successBox');
+const themeBtn = document.getElementById('themeToggle');
+
+function syncThemeButton() {
+  const isDark = document.documentElement.classList.contains('dark');
+  themeBtn.textContent = isDark ? 'Jour' : 'Nuit';
+  themeBtn.title = isDark ? 'Activer le mode jour' : 'Activer le mode nuit';
+  themeBtn.setAttribute('aria-label', isDark ? 'Activer le mode jour' : 'Activer le mode nuit');
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('darna-theme', isDark ? 'dark' : 'light');
+  syncThemeButton();
+}
+
+function initReveal() {
+  const items = Array.from(document.querySelectorAll('[data-reveal]'));
+
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(item => item.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, {
+    rootMargin: '0px 0px -12% 0px',
+    threshold: 0.12
+  });
+
+  items.forEach(item => observer.observe(item));
+}
+
+themeBtn.addEventListener('click', toggleTheme);
+
+function formatMoney(value) {
+  return `${new Intl.NumberFormat('fr-MA').format(Math.round(value))} MAD`;
+}
+
+function formatHumanDate(value) {
+  if (!value) return 'dates a definir';
+  const date = new Date(`${value}T12:00:00`);
+  return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
+}
+
+function getNights() {
+  if (!arrivalInput.value || !departureInput.value) return 1;
+  const start = new Date(`${arrivalInput.value}T12:00:00`);
+  const end = new Date(`${departureInput.value}T12:00:00`);
+  const diff = Math.round((end - start) / 86400000);
+  return diff > 0 ? diff : 1;
+}
+
+function getGuests() {
+  return Number(adultsInput.value || 0) + Number(childrenInput.value || 0);
+}
+
+function syncDateBounds() {
+  if (arrivalInput.value) {
+    departureInput.min = arrivalInput.value;
+    if (departureInput.value && departureInput.value <= arrivalInput.value) {
+      const nextDay = new Date(`${arrivalInput.value}T12:00:00`);
+      nextDay.setDate(nextDay.getDate() + 1);
+      departureInput.value = nextDay.toISOString().slice(0, 10);
+    }
+  }
+}
+
+function updateSummary() {
+  const nights = getNights();
+  const guests = getGuests();
+  const subtotal = property.nightlyRate * nights;
+  const serviceFee = Math.round(subtotal * 0.12);
+  const cityTax = nights * guests * 25;
+  const total = subtotal + serviceFee + cityTax;
+  const deposit = Math.round(total * 0.3);
+
+  document.getElementById('summaryNights').textContent = `${nights}`;
+  document.getElementById('summaryGuests').textContent = `${guests}`;
+  document.getElementById('summarySubtotal').textContent = formatMoney(subtotal);
+  document.getElementById('summaryService').textContent = formatMoney(serviceFee);
+  document.getElementById('summaryTax').textContent = formatMoney(cityTax);
+  document.getElementById('summaryTotal').textContent = formatMoney(total);
+  document.getElementById('depositAmount').textContent = formatMoney(deposit);
+  document.getElementById('dateRecap').textContent = `${formatHumanDate(arrivalInput.value)} -> ${formatHumanDate(departureInput.value)} pour ${guests} voyageur${guests > 1 ? 's' : ''}.`;
+}
+
+function renderProperty() {
+  if (requestedSlug && !properties[requestedSlug]) {
+    document.getElementById('alertBox').classList.add('show');
+  }
+
+  document.title = `${property.name} | Reservation DarNa`;
+  document.getElementById('bookingType').textContent = property.type;
+  document.getElementById('bookingName').textContent = property.name;
+  document.getElementById('bookingLocation').textContent = property.location;
+  document.getElementById('bookingSummary').textContent = property.summary;
+  document.getElementById('summaryType').textContent = property.type;
+  document.getElementById('summaryProperty').textContent = property.name;
+  document.getElementById('summaryLocation').textContent = property.location;
+  document.getElementById('nightlyPrice').textContent = formatMoney(property.nightlyRate);
+  document.getElementById('capacityChip').textContent = `Capacite: ${property.capacity}`;
+  document.getElementById('ratingChip').textContent = `Note: ${property.rating} / 5`;
+  document.getElementById('reviewsChip').textContent = `Avis: ${property.reviews}`;
+  document.getElementById('backToProperty').href = `property.html?slug=${encodeURIComponent(currentSlug)}`;
+  document.getElementById('seePropertyBtn').href = `property.html?slug=${encodeURIComponent(currentSlug)}`;
+
+  const heroFacts = document.getElementById('heroFacts');
+  heroFacts.innerHTML = '';
+  [property.capacity, ...property.facts].forEach(item => {
+    const pill = document.createElement('span');
+    pill.className = 'fact-pill';
+    pill.textContent = item;
+    heroFacts.appendChild(pill);
+  });
+
+  const summaryTags = document.getElementById('summaryTags');
+  summaryTags.innerHTML = '';
+  property.facts.forEach(item => {
+    const tag = document.createElement('span');
+    tag.className = 'summary-tag';
+    tag.textContent = item;
+    summaryTags.appendChild(tag);
+  });
+
+  document.getElementById('heroPanel').style.background = `linear-gradient(135deg, rgba(20, 14, 10, 0.28), rgba(196, 98, 45, 0.34)), center/cover no-repeat url("${property.photo}")`;
+  document.getElementById('summaryPhoto').style.background = `linear-gradient(135deg, rgba(196, 98, 45, 0.25), rgba(21, 15, 11, 0.46)), center/cover no-repeat url("${property.photo}")`;
+}
+
+function setDefaultDates() {
+  const today = new Date();
+  const arrival = new Date(today);
+  arrival.setDate(arrival.getDate() + 7);
+  const departure = new Date(arrival);
+  departure.setDate(departure.getDate() + 3);
+
+  const toValue = date => date.toISOString().slice(0, 10);
+  arrivalInput.min = toValue(today);
+  departureInput.min = toValue(arrival);
+
+  arrivalInput.value = params.get('arrival') || toValue(arrival);
+  departureInput.value = params.get('departure') || toValue(departure);
+  adultsInput.value = params.get('adults') || '2';
+  childrenInput.value = params.get('children') || '0';
+  syncDateBounds();
+}
+
+reservationForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!reservationForm.reportValidity()) return;
+
+  const submitBtn = reservationForm.querySelector('.primary-btn');
+  const initialLabel = submitBtn.textContent;
+  const fullName = `${document.getElementById('firstNameInput').value} ${document.getElementById('lastNameInput').value}`.trim();
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Envoi...';
+
+  try {
+    const localRequest = window.DarNaStatic.saveReservationRequest({
+      property_slug: currentSlug,
+      arrival_date: arrivalInput.value,
+      departure_date: departureInput.value,
+      adults_count: Number(adultsInput.value || 0),
+      children_count: Number(childrenInput.value || 0),
+      first_name: document.getElementById('firstNameInput').value,
+      last_name: document.getElementById('lastNameInput').value,
+      email: document.getElementById('emailInput').value,
+      phone: document.getElementById('phoneInput').value,
+      notes: document.getElementById('notesInput').value
+    });
+    const total = formatMoney(property.nightlyRate * getNights());
+
+    successBox.classList.add('show');
+    successBox.innerHTML = `
+      <strong>Demande enregistree localement</strong><br>
+      Merci ${fullName}. Ta demande a bien ete sauvegardee dans le navigateur pour ${property.name}.<br>
+      Periode: <strong>${formatHumanDate(arrivalInput.value)}</strong> au <strong>${formatHumanDate(departureInput.value)}</strong>.<br>
+      Total estime: <strong>${total}</strong>.<br>
+      Reference locale: <strong>#${localRequest.id}</strong>.
+    `;
+    successBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = initialLabel;
+  }
+});
+
+[arrivalInput, departureInput, adultsInput, childrenInput].forEach(input => {
+  input.addEventListener('change', () => {
+    syncDateBounds();
+    updateSummary();
+  });
+});
+
+syncThemeButton();
+renderProperty();
+setDefaultDates();
+updateSummary();
+initReveal();
+</script>
+</body>
+</html>

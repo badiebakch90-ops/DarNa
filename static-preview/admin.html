@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--
+  ─────────────────────────────────────────────────────────────
+    DarNa — Plateforme de location authentique au Maroc 🇲🇦
+    Author    : Abdelbadie Abkhich (@badiebakch90-ops)
+    Original  : https://github.com/badiebakch90-ops/DarNa
+    Copyright : © 2026 Abdelbadie Abkhich — All rights reserved
+    License   : See LICENSE file
+  ─────────────────────────────────────────────────────────────
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarNa Admin | Login</title>
+<meta name="theme-color" content="#C4622D">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23C4622D'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='58' font-weight='600' text-anchor='middle' fill='%23FDFAF6'%3ED%3C/text%3E%3C/svg%3E">
+<script>
+  (function () {
+    try {
+      var theme = localStorage.getItem("darna-theme");
+      var language = localStorage.getItem("darna-language") || "fr";
+
+      if (theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      document.documentElement.lang = language;
+      document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+
+      if (sessionStorage.getItem("darnaAdminSession")) {
+        window.location.replace("./admin-dashboard.html");
+      }
+    } catch (error) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./index.html">Dar<em>Na</em></a>
+    <div class="topbar-actions">
+      <div class="language-switcher" role="group" aria-label="Language switcher">
+        <button class="language-btn" type="button" data-language-option="fr">FR</button>
+        <button class="language-btn" type="button" data-language-option="en">EN</button>
+        <button class="language-btn" type="button" data-language-option="ar">AR</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle="text"></button>
+    </div>
+  </header>
+
+  <main class="admin-shell auth-shell">
+    <section class="auth-panel">
+      <div class="panel-kicker" data-i18n="login_kicker"></div>
+      <h1 class="panel-title" data-i18n="login_title"></h1>
+      <p class="copy" data-i18n="login_copy"></p>
+
+      <div class="helper-row">
+        <span class="helper-chip" data-i18n="login_session_chip"></span>
+      </div>
+
+      <div class="error-box" id="loginError" hidden></div>
+
+      <form id="adminLoginForm" novalidate>
+        <div class="form-grid">
+          <div class="field full">
+            <label class="label" for="adminUsername" data-i18n="username_label"></label>
+            <input class="input" id="adminUsername" name="username" type="text" autocomplete="username" required data-i18n-placeholder="username_placeholder">
+          </div>
+
+          <div class="field full">
+            <label class="label" for="adminPassword" data-i18n="password_label"></label>
+            <input class="input" id="adminPassword" name="password" type="password" autocomplete="current-password" required data-i18n-placeholder="password_placeholder">
+          </div>
+        </div>
+
+        <div class="panel-actions">
+          <button class="primary-btn" type="submit" data-i18n="login_submit"></button>
+          <a class="ghost-btn" href="./index.html" data-i18n="back_home"></a>
+        </div>
+      </form>
+
+      <p class="copy" data-i18n="login_hint"></p>
+    </section>
+  </main>
+
+  <!-- Charge la config admin LOCALE si disponible (fichier non commit, non deploye).
+       En production (Netlify), ce fichier n'existe pas, donc l'admin reste desactive. -->
+  <script src="./admin-config.local.js" onerror="this.remove()"></script>
+  <script src="./darna-static.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const DarNa = window.DarNaStatic;
+      const loginForm = document.getElementById("adminLoginForm");
+      const errorBox = document.getElementById("loginError");
+      const usernameInput = document.getElementById("adminUsername");
+      const passwordInput = document.getElementById("adminPassword");
+      let errorKey = "";
+
+      function render() {
+        DarNa.applySavedPreferences();
+        DarNa.applyAdminTranslations(document);
+        DarNa.syncThemeButtons(document);
+        DarNa.syncLanguageButtons(document);
+
+        if (errorKey) {
+          errorBox.hidden = false;
+          errorBox.textContent = DarNa.t(errorKey);
+        } else {
+          errorBox.hidden = true;
+          errorBox.textContent = "";
+        }
+      }
+
+      DarNa.bindThemeButtons(document, render);
+      DarNa.bindLanguageButtons(document, render);
+      render();
+
+      // Si ADMIN_CONFIG manque (cas du deploiement public sur Netlify),
+      // on desactive le formulaire et on affiche un message clair.
+      if (!window.ADMIN_CONFIG) {
+        loginForm.style.opacity = "0.4";
+        loginForm.style.pointerEvents = "none";
+        usernameInput.disabled = true;
+        passwordInput.disabled = true;
+        errorBox.hidden = false;
+        errorBox.style.background = "rgba(196, 98, 45, 0.1)";
+        errorBox.style.border = "1px solid var(--terracotta, #C4622D)";
+        errorBox.style.color = "var(--terracotta, #C4622D)";
+        errorBox.textContent = "🔒 Admin disponible uniquement en local. Configure admin-config.local.js pour activer.";
+        return;
+      }
+
+      if (DarNa.isAdminAuthenticated()) {
+        window.location.replace("./admin-dashboard.html");
+        return;
+      }
+
+      loginForm.addEventListener("submit", event => {
+        event.preventDefault();
+
+        if (!loginForm.reportValidity()) {
+          return;
+        }
+
+        const isLoggedIn = DarNa.loginAdmin(usernameInput.value.trim(), passwordInput.value);
+
+        if (!isLoggedIn) {
+          errorKey = "login_error";
+          passwordInput.focus();
+          render();
+          return;
+        }
+
+        errorKey = "";
+        render();
+        window.location.href = "./admin-dashboard.html";
+      });
+    });
+  </script>
+</body>
+</html>

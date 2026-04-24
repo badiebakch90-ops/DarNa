@@ -1,0 +1,19 @@
+# Fichiers a exclure du build Docker (gain de temps + securite)
+.git
+.gitignore
+.env
+.env.local
+.env.backup
+.env.production
+node_modules
+vendor
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+.phpunit.cache
+.phpunit.result.cache
+tests
+.editorconfig
+.gitattributes
+README.md

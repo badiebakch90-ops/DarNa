@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin-dashboard.html
+Disallow: /forms.html
+
+Sitemap: https://eclectic-llama-da39dd.netlify.app/sitemap.xml

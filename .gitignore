@@ -1,0 +1,66 @@
+# ═══════════════════════════════════════════════════════
+#   .gitignore - DarNa
+# ═══════════════════════════════════════════════════════
+
+# ─── Editeurs / IDE ─────────────────────────────────────
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ─── OS ─────────────────────────────────────────────────
+desktop.ini
+$RECYCLE.BIN/
+
+# ─── Logs ───────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# ─── Static preview ─────────────────────────────────────
+# Configuration admin LOCALE (NE JAMAIS commit !)
+static-preview/admin-config.local.js
+
+# ─── Backend Laravel ────────────────────────────────────
+# Dependances PHP (installees avec composer install)
+backend-laravel/vendor/
+
+# Variables d'environnement (mots de passe DB, API keys, etc.)
+backend-laravel/.env
+backend-laravel/.env.backup
+backend-laravel/.env.production
+backend-laravel/.env.local
+backend-laravel/.env.*.local
+
+# Cache, logs, sessions, fichiers uploades
+backend-laravel/storage/app/public/
+backend-laravel/storage/framework/cache/
+backend-laravel/storage/framework/sessions/
+backend-laravel/storage/framework/views/
+backend-laravel/storage/logs/
+backend-laravel/storage/*.key
+backend-laravel/bootstrap/cache/
+
+# Assets compiles
+backend-laravel/public/build/
+backend-laravel/public/hot/
+backend-laravel/public/storage/
+backend-laravel/node_modules/
+
+# Base de donnees locale
+backend-laravel/database/database.sqlite
+
+# Tests
+backend-laravel/.phpunit.result.cache
+backend-laravel/.phpunit.cache/
+
+# ─── Outils ─────────────────────────────────────────────
+tools/composer.phar
+
+# ─── Fichiers temporaires ───────────────────────────────
+*.tmp
+*.bak
+*.old

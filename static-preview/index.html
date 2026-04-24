@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<!--
+  ─────────────────────────────────────────────────────────────
+    DarNa — Plateforme de location authentique au Maroc 🇲🇦
+    Author    : Abdelbadie Abkhich (@badiebakch90-ops)
+    Original  : https://github.com/badiebakch90-ops/DarNa
+    Copyright : © 2026 Abdelbadie Abkhich — All rights reserved
+    License   : See LICENSE file
+  ─────────────────────────────────────────────────────────────
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarNa — Sejours design et locations authentiques au Maroc</title>
+
+<!-- SEO -->
+<meta name="description" content="DarNa : decouvre des riads, villas, appartements et maisons authentiques a louer partout au Maroc. Marrakech, Casablanca, Tanger, Essaouira, Agadir et plus.">
+<meta name="keywords" content="location maroc, riad marrakech, villa agadir, location vacances maroc, dar maroc, sejour maroc, riad fes, hebergement maroc">
+<meta name="author" content="DarNa">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#C4622D">
+<link rel="canonical" href="https://eclectic-llama-da39dd.netlify.app/">
+
+<!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="DarNa — Sejours design au Maroc">
+<meta property="og:description" content="Riads, villas et maisons d'exception a louer partout au Maroc. Vis le Maroc comme chez toi.">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="ar_MA">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:site_name" content="DarNa">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DarNa — Sejours design au Maroc">
+<meta name="twitter:description" content="Riads, villas et maisons d'exception a louer partout au Maroc.">
+
+<!-- Favicon (SVG inline) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23C4622D'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='58' font-weight='600' text-anchor='middle' fill='%23FDFAF6'%3ED%3C/text%3E%3C/svg%3E">
+<meta name="description" id="metaDescription" content="DarNa static preview with local listings and admin dashboard.">
+<script>
+  (function () {
+    try {
+      var savedTheme = localStorage.getItem("darna-theme");
+      var savedLanguage = localStorage.getItem("darna-language") || "fr";
+
+      if (savedTheme === "dark" || (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      document.documentElement.lang = savedLanguage;
+      document.documentElement.dir = savedLanguage === "ar" ? "rtl" : "ltr";
+    } catch (error) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="./darna-site.css" rel="stylesheet">
+<style>
+  .nav-utility-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .language-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .language-pill {
+    min-width: 2.7rem;
+    min-height: 2.55rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ink);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    transition: 0.25s ease;
+  }
+
+  .language-pill:hover {
+    transform: translateY(-1px);
+    border-color: rgba(184, 90, 43, 0.38);
+  }
+
+  .language-pill.is-active {
+    background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 14px 30px rgba(184, 90, 43, 0.2);
+  }
+
+  .search-toggle-mobile {
+    display: none;
+    width: 100%;
+  }
+
+  .search-panel-body[hidden] {
+    display: none !important;
+  }
+
+  html[dir="rtl"] .section-kicker {
+    flex-direction: row-reverse;
+  }
+
+  html[dir="rtl"] #mainNav .navbar-nav {
+    margin-left: 0 !important;
+    margin-right: auto;
+    align-items: flex-start !important;
+  }
+
+  html[dir="rtl"] .footer-links,
+  html[dir="rtl"] .soft-copy,
+  html[dir="rtl"] .field-label {
+    text-align: right;
+  }
+
+  @media (max-width: 991px) {
+    .nav-utility-row {
+      padding-top: 0.5rem;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .search-toggle-mobile {
+      display: inline-flex;
+      margin-bottom: 0.85rem;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="site-shell">
+  <nav class="navbar navbar-expand-lg navbar-shell">
+    <div class="container py-2">
+      <a class="navbar-brand brand-mark mb-0" href="./index.html">Dar<em>Na</em></a>
+      <button class="navbar-toggler nav-pill px-3 py-2" id="navMenuButton" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        Menu
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2 my-3 my-lg-0">
+          <li class="nav-item"><a class="nav-link" id="navCollections" href="#collections">Collections</a></li>
+          <li class="nav-item"><a class="nav-link" id="navStays" href="#stays">Sejours</a></li>
+          <li class="nav-item"><a class="nav-link" id="navExperience" href="#experience">Experience</a></li>
+          <li class="nav-item ms-lg-2">
+            <div class="nav-utility-row">
+              <button type="button" class="icon-button" data-theme-toggle aria-label="Activer le mode nuit" title="Activer le mode nuit">&#9789;</button>
+              <div class="language-switch" aria-label="Language switcher">
+                <button type="button" class="language-pill" data-language-option="fr">FR</button>
+                <button type="button" class="language-pill" data-language-option="en">EN</button>
+                <button type="button" class="language-pill" data-language-option="ar">AR</button>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="ghost-pill nav-auth-btn" id="navAdminLink" href="./admin.html">Connexion admin</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="section-space">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-card hero-card-accent" data-reveal>
+            <div class="section-kicker mb-3" id="heroKicker">Sejours au Maroc</div>
+            <h1 class="section-title" id="heroTitle">Sejourner au Maroc avec une <em>experience plus claire</em></h1>
+            <p class="soft-copy mb-4" id="heroCopy">
+              Cette version statique de DarNa affiche les logements hardcodes du projet
+              et les annonces ajoutees depuis le dashboard admin local.
+            </p>
+            <div class="hero-actions" data-reveal style="--reveal-delay: 120ms;">
+              <a class="primary-pill" id="heroPrimaryCta" href="#stays">Explorer les sejours</a>
+              <a class="ghost-pill" id="heroSecondaryCta" href="#collections">Voir les collections</a>
+            </div>
+
+            <div class="search-panel mb-4" id="searchPanel">
+              <button class="primary-pill search-toggle-mobile" id="searchToggleButton" type="button" aria-expanded="false">Rechercher</button>
+              <div class="search-panel-body" id="searchPanelBody">
+                <form class="row g-3" id="searchForm">
+                  <div class="col-md-5">
+                    <label class="field-label" id="destinationLabel" for="destinationInput">Recherche</label>
+                    <input class="soft-input" id="destinationInput" type="text" placeholder="Ville, logement, tag, equipement...">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="field-label" id="typeLabel" for="typeInput">Type</label>
+                    <select class="soft-select" id="typeInput">
+                      <option value="">Tous</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="field-label" id="guestsLabel" for="guestsInput">Voyageurs</label>
+                    <input class="soft-input" id="guestsInput" type="number" min="1" value="2">
+                  </div>
+                  <div class="col-md-2 d-flex align-items-end">
+                    <button class="primary-pill w-100" id="searchSubmitButton" type="submit">Rechercher</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="stat-strip" id="statsGrid">
+              <article class="glass-panel stat-card">
+                <div class="stat-value" id="statProperties">7</div>
+                <div class="soft-copy mb-0" id="statPropertiesLabel">Logements verifies</div>
+              </article>
+              <article class="glass-panel stat-card">
+                <div class="stat-value" id="statCities">7</div>
+                <div class="soft-copy mb-0" id="statCitiesLabel">Villes couvertes</div>
+              </article>
+              <article class="glass-panel stat-card">
+                <div class="stat-value" id="statSatisfaction">98<span>%</span></div>
+                <div class="soft-copy mb-0" id="statSatisfactionLabel">Satisfaction annoncee</div>
+              </article>
+            </div>
+          </div>
+
+          <aside class="hero-card spotlight-card" data-reveal style="--reveal-delay: 180ms;">
+            <div class="spotlight-media mb-3" id="spotlightMedia"></div>
+            <div class="d-flex flex-wrap gap-2 mb-3" id="spotlightTags"></div>
+            <div class="section-kicker mb-2" id="spotlightKicker">Spotlight</div>
+            <h2 class="font-display display-5 mb-2" id="spotlightName">Selection signature</h2>
+            <p class="soft-copy mb-4" id="spotlightCopy">Une adresse marquee par le design, la lumiere et l art de vivre marocain.</p>
+            <div class="d-flex flex-wrap gap-2">
+              <a class="primary-pill" href="#" id="spotlightLink">Voir le logement</a>
+              <span class="nav-pill" id="spotlightLocation">Maroc</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-space pt-0" id="collections">
+      <div class="container">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4" data-reveal>
+          <div>
+            <div class="section-kicker mb-3" id="collectionsKicker">Collections</div>
+            <h2 class="section-title mb-2" id="collectionsTitle">Des capsules de voyage <em>plus editoriales</em></h2>
+            <p class="soft-copy mb-0" id="collectionsCopy">Chaque collection reprend une famille de sejours et t emmene directement vers les fiches detail.</p>
+          </div>
+        </div>
+        <div class="row g-4" id="collectionsGrid">
+          <div class="col-12">
+            <div class="loading-state" id="collectionsLoading">Collections DarNa</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-space pt-0">
+      <div class="container">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4" data-reveal>
+          <div>
+            <div class="section-kicker mb-3" id="categoriesKicker">Categories</div>
+            <h2 class="section-title mb-2" id="categoriesTitle">Explorer par <em>type de bien</em></h2>
+          </div>
+        </div>
+        <div class="row g-4" id="categoriesGrid">
+          <div class="col-12">
+            <div class="loading-state" id="categoriesLoading">Types de biens DarNa</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-space pt-0" id="stays">
+      <div class="container">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4" data-reveal>
+          <div>
+            <div class="section-kicker mb-3" id="staysKicker">Sejours disponibles</div>
+            <h2 class="section-title mb-2" id="staysTitle">Decouvre des logements <em>adaptes a ton sejour</em></h2>
+            <p class="soft-copy mb-0" id="listingFeedback">Affinez la recherche par destination, type de bien et nombre de voyageurs.</p>
+          </div>
+        </div>
+        <div class="row g-4" id="staysGrid">
+          <div class="col-12">
+            <div class="loading-state" id="staysLoading">Selection DarNa</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-space pt-0" id="experience">
+      <div class="container">
+        <div class="experience-grid">
+          <article class="experience-card" data-reveal>
+            <div class="section-kicker mb-3" id="experienceKicker">Pourquoi DarNa</div>
+            <h2 class="font-display display-5 mb-3" id="experienceTitle">Un parcours de reservation <em>plus net</em></h2>
+            <p class="soft-copy mb-0" id="experienceCopy">Recherche claire, disponibilite verifiee, interface mobile plus propre et navigation fluide entre listing, fiche, reservation et espace compte.</p>
+          </article>
+          <article class="experience-card" data-reveal style="--reveal-delay: 80ms;">
+            <div class="experience-step">01</div>
+            <h3 class="font-display h2 mb-3" id="experienceStepOneTitle">Choisir</h3>
+            <p class="soft-copy mb-0" id="experienceStepOneCopy">Filtre par destination, type et capacite avec des cartes plus editoriales et mieux structurees.</p>
+          </article>
+          <article class="experience-card" data-reveal style="--reveal-delay: 140ms;">
+            <div class="experience-step">02</div>
+            <h3 class="font-display h2 mb-3" id="experienceStepTwoTitle">Verifier</h3>
+            <p class="soft-copy mb-0" id="experienceStepTwoCopy">Chaque demande controle la disponibilite et bloque les chevauchements de reservation.</p>
+          </article>
+          <article class="experience-card" data-reveal style="--reveal-delay: 200ms;">
+            <div class="experience-step">03</div>
+            <h3 class="font-display h2 mb-3" id="experienceStepThreeTitle">Gerer</h3>
+            <p class="soft-copy mb-0" id="experienceStepThreeCopy">Une connexion admin locale permet d ouvrir le dashboard, ajouter des annonces et garder la session jusqu a la fermeture de l onglet.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ SECTION CONTACT (Netlify Forms) ═══════════════ -->
+    <section class="section-space pt-0" id="contact">
+      <div class="container">
+        <div class="text-center mb-5" data-reveal>
+          <p class="eyebrow" id="contactEyebrow">Reste en lien</p>
+          <h2 class="display-soft mt-3" id="contactTitle">Une question, une envie de partir&nbsp;?</h2>
+          <p class="soft-copy mx-auto" style="max-width: 580px;" id="contactCopy">
+            Ecris-nous, on revient vers toi en moins de 24h pour t'aider a trouver le logement qui te ressemble.
+          </p>
+        </div>
+
+        <div class="row justify-content-center" data-reveal style="--reveal-delay: 100ms;">
+          <div class="col-lg-8">
+            <!--
+              FORMULAIRE NETLIFY FORMS
+              data-netlify="true" : active la detection automatique par Netlify
+              netlify-honeypot : champ cache anti-spam (les bots le remplissent, on ignore)
+              name : nom du formulaire dans le dashboard Netlify
+              Pour recevoir les emails : Settings > Forms > Form notifications > Add notification
+            -->
+            <form
+              name="darna-contact"
+              method="POST"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              id="contactForm"
+              style="background: var(--surface, #fff); padding: 32px; border-radius: 22px; box-shadow: 0 18px 50px rgba(28, 23, 20, 0.08);"
+            >
+              <!-- Champ requis pour Netlify Forms -->
+              <input type="hidden" name="form-name" value="darna-contact">
+              <!-- Honeypot anti-spam (cache aux humains) -->
+              <p style="display: none;">
+                <label>Ne pas remplir : <input name="bot-field"></label>
+              </p>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="contactName" class="form-label" id="contactNameLabel" style="font-weight:500;font-size:14px;color:var(--ink);">Nom complet</label>
+                  <input type="text" class="form-control" id="contactName" name="name" required minlength="2" maxlength="80" autocomplete="name" style="padding:12px 16px;border-radius:12px;border:1px solid rgba(0,0,0,0.1);">
+                </div>
+                <div class="col-md-6">
+                  <label for="contactEmail" class="form-label" id="contactEmailLabel" style="font-weight:500;font-size:14px;color:var(--ink);">Email</label>
+                  <input type="email" class="form-control" id="contactEmail" name="email" required maxlength="120" autocomplete="email" style="padding:12px 16px;border-radius:12px;border:1px solid rgba(0,0,0,0.1);">
+                </div>
+                <div class="col-12">
+                  <label for="contactSubject" class="form-label" id="contactSubjectLabel" style="font-weight:500;font-size:14px;color:var(--ink);">Sujet</label>
+                  <select class="form-control" id="contactSubject" name="subject" required style="padding:12px 16px;border-radius:12px;border:1px solid rgba(0,0,0,0.1);">
+                    <option value="">— Choisir —</option>
+                    <option value="reservation">Demande de reservation</option>
+                    <option value="hosting">Devenir hote</option>
+                    <option value="info">Question generale</option>
+                    <option value="other">Autre</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label for="contactMessage" class="form-label" id="contactMessageLabel" style="font-weight:500;font-size:14px;color:var(--ink);">Ton message</label>
+                  <textarea class="form-control" id="contactMessage" name="message" rows="5" required minlength="10" maxlength="2000" style="padding:12px 16px;border-radius:12px;border:1px solid rgba(0,0,0,0.1);resize:vertical;"></textarea>
+                </div>
+                <div class="col-12 d-flex flex-wrap gap-3 align-items-center justify-content-between mt-4">
+                  <p class="soft-copy mb-0" style="font-size:13px;" id="contactPrivacy">
+                    Tes donnees ne seront jamais partagees ni revendues.
+                  </p>
+                  <button type="submit" class="btn-cta" id="contactSubmit" style="background:var(--terracotta,#C4622D);color:#fff;border:none;padding:14px 32px;border-radius:30px;font-weight:600;cursor:pointer;font-size:15px;">
+                    Envoyer
+                  </button>
+                </div>
+                <!-- Message succes (cache par defaut) -->
+                <div class="col-12" id="contactSuccess" style="display:none;background:rgba(46,160,67,0.1);border:1px solid #2ea043;color:#2ea043;padding:16px;border-radius:12px;margin-top:16px;">
+                  ✅ Merci ! Ton message a bien ete envoye. On te repond rapidement.
+                </div>
+                <div class="col-12" id="contactErrorBox" style="display:none;background:rgba(214,53,53,0.1);border:1px solid #d63535;color:#d63535;padding:16px;border-radius:12px;margin-top:16px;">
+                  ❌ Une erreur s'est produite. Reessaie ou contacte-nous via WhatsApp.
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer-shell">
+    <div class="container footer-grid">
+      <div data-reveal>
+        <a class="brand-mark d-inline-block mb-3" href="./index.html">Dar<em>Na</em></a>
+        <p class="soft-copy mb-0" id="footerCopy">Une plateforme plus premium pour reserver, gerer et valoriser des sejours de colocation et de location au Maroc.</p>
+      </div>
+      <div data-reveal style="--reveal-delay: 60ms;">
+        <div class="footer-title" id="footerExplorerTitle">Explorer</div>
+        <div class="footer-links">
+          <a href="./index.html" id="footerHomeLink">Accueil</a>
+          <a href="#stays" id="footerStaysLink">Sejours</a>
+          <a href="#experience" id="footerExperienceLink">Experience</a>
+        </div>
+      </div>
+      <div data-reveal style="--reveal-delay: 120ms;">
+        <div class="footer-title" id="footerAccountTitle">Compte</div>
+        <div class="footer-links">
+          <a href="./admin.html" id="footerAdminLink">Connexion admin</a>
+        </div>
+      </div>
+      <div data-reveal style="--reveal-delay: 180ms;">
+        <div class="footer-title" id="footerContactTitle">Contact</div>
+        <div class="footer-links">
+          <span>Casablanca, Marrakech, Tanger</span>
+          <a href="#contact">Nous contacter</a>
+          <a href="https://wa.me/212721414433" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./darna-static.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const DarNa = window.DarNaStatic;
+    const metaDescription = document.getElementById("metaDescription");
+    const searchPanel = document.getElementById("searchPanel");
+    const searchPanelBody = document.getElementById("searchPanelBody");
+    const searchToggleButton = document.getElementById("searchToggleButton");
+    const collectionsGrid = document.getElementById("collectionsGrid");
+    const categoriesGrid = document.getElementById("categoriesGrid");
+    const staysGrid = document.getElementById("staysGrid");
+    const searchForm = document.getElementById("searchForm");
+    const destinationInput = document.getElementById("destinationInput");
+    const typeInput = document.getElementById("typeInput");
+    const guestsInput = document.getElementById("guestsInput");
+    const listingFeedback = document.getElementById("listingFeedback");
+    const mobileSearchQuery = window.matchMedia("(max-width: 767.98px)");
+    const navLinks = Array.from(document.querySelectorAll("#mainNav .nav-link[href^='#']"));
+    const sectionTargets = navLinks
+      .map(link => {
+        const target = document.querySelector(link.getAttribute("href"));
+        return target ? { link, target } : null;
+      })
+      .filter(Boolean);
+    let allProperties = DarNa.getMergedProperties();
+    let searchExpanded = !mobileSearchQuery.matches;
+    let revealObserver = null;
+
+    const HOME_TRANSLATIONS = {
+      fr: {
+        page_title: "DarNa | Sejours design au Maroc",
+        page_description: "Version statique de DarNa avec annonces locales, dashboard admin et mode multilingue.",
+        nav_menu: "Menu",
+        nav_collections: "Collections",
+        nav_stays: "Sejours",
+        nav_hosting: "Proprietaires",
+        nav_experience: "Experience",
+        nav_admin: "Connexion admin",
+        hero_cta_primary: "Explorer les sejours",
+        hero_cta_secondary: "Voir les collections",
+        nav_dashboard: "Dashboard",
+        hero_kicker: "Sejours au Maroc",
+        hero_title: "Sejourner au Maroc avec une <em>experience plus claire</em>",
+        hero_copy: "DarNa rassemble une selection de logements a travers le Maroc, avec un parcours simple pour explorer, comparer et reserver des adresses de caractere.",
+        search_label: "Recherche",
+        search_placeholder: "Ville, logement, tag, equipement...",
+        search_type: "Type",
+        search_type_all: "Tous",
+        search_guests: "Voyageurs",
+        search_open: "Rechercher",
+        search_close: "Fermer la recherche",
+        search_submit: "Rechercher",
+        admin_highlight_kicker: "Admin local",
+        admin_highlight_title: "Ajoute un bien et vois-le apparaitre ici tout de suite",
+        admin_highlight_copy: "Connecte-toi, publie une annonce en localStorage puis retrouve-la dans la grille de sejours sans backend.",
+        admin_highlight_dashboard: "Ouvrir le dashboard",
+        admin_highlight_login: "Connexion admin",
+        stat_properties: "Logements verifies",
+        stat_cities: "Villes couvertes",
+        stat_satisfaction: "Satisfaction annoncee",
+        spotlight_kicker: "Spotlight",
+        spotlight_loading_name: "Selection signature",
+        spotlight_loading_copy: "Une adresse marquee par le design, la lumiere et l art de vivre marocain.",
+        spotlight_action: "Voir le logement",
+        country_label: "Maroc",
+        collections_kicker: "Collections",
+        collections_title: "Des capsules de voyage <em>plus editoriales</em>",
+        collections_copy: "Chaque collection reprend une famille de sejours et t emmene directement vers les fiches detail.",
+        collections_loading: "Collections DarNa",
+        collections_empty: "Aucune collection disponible.",
+        collections_open: "Ouvrir la collection",
+        categories_kicker: "Categories",
+        categories_title: "Explorer par <em>type de bien</em>",
+        categories_loading: "Types de biens DarNa",
+        categories_empty: "Aucune categorie disponible.",
+        categories_count: "logements dans cette categorie",
+        stays_kicker: "Sejours disponibles",
+        stays_title: "Decouvre des logements <em>adaptes a ton sejour</em>",
+        stays_intro: "Affinez la recherche par destination, type de bien et nombre de voyageurs.",
+        stays_loading: "Selection DarNa",
+        stays_view: "Voir",
+        stays_new: "Nouvelle annonce",
+        stays_result_zero: "0 logement trouve pour cette recherche.",
+        stays_result_one: "1 logement disponible pour cette recherche.",
+        stays_result_many: "{count} logements disponibles pour cette recherche.",
+        stays_empty: "Aucun logement ne correspond a cette recherche.",
+        hosting_kicker: "Proprietaires",
+        hosting_title: "Ajoute de nouvelles annonces depuis un <em>dashboard admin</em>",
+        hosting_copy: "Le dashboard admin permet d ajouter des biens, de les supprimer, puis de les afficher directement dans cette grille sans backend ni base de donnees.",
+        hosting_status: "Etat du projet",
+        hosting_tag_storage: "LocalStorage",
+        hosting_tag_session: "SessionStorage",
+        hosting_tag_bootstrap: "Bootstrap",
+        hosting_tag_responsive: "Responsive",
+        hosting_tag_js: "JS dynamique",
+        experience_kicker: "Pourquoi DarNa",
+        experience_title: "Un parcours de reservation <em>plus net</em>",
+        experience_copy: "Recherche claire, disponibilite verifiee, interface mobile plus propre et navigation fluide entre listing, fiche, reservation et espace compte.",
+        experience_step_one_title: "Choisir",
+        experience_step_one_copy: "Filtre par destination, type et capacite avec des cartes plus editoriales et mieux structurees.",
+        experience_step_two_title: "Verifier",
+        experience_step_two_copy: "Chaque demande controle la disponibilite et bloque les chevauchements de reservation.",
+        experience_step_three_title: "Gerer",
+        experience_step_three_copy: "Une connexion admin locale permet d ouvrir le dashboard, ajouter des annonces et garder la session jusqu a la fermeture de l onglet.",
+        cta_kicker: "Compte DarNa",
+        cta_title: "Ajoute tes biens depuis un <em>espace admin local</em>",
+        cta_copy: "Connecte-toi avec les identifiants admin, publie des annonces en local et affiche-les instantanement dans les pages statiques du projet.",
+        cta_dashboard: "Ouvrir le dashboard",
+        cta_login: "Connexion admin",
+        footer_copy: "Une plateforme plus premium pour reserver, gerer et valoriser des sejours de colocation et de location au Maroc.",
+        footer_explorer: "Explorer",
+        footer_home: "Accueil",
+        footer_stays: "Sejours",
+        footer_experience: "Experience",
+        footer_account: "Compte",
+        footer_admin: "Connexion admin",
+        footer_dashboard: "Dashboard",
+        footer_session: "Session locale",
+        footer_contact: "Contact"
+      },
+      en: {
+        page_title: "DarNa | Design stays across Morocco",
+        page_description: "Static DarNa preview with local listings, admin dashboard, and multilingual support.",
+        nav_menu: "Menu",
+        nav_collections: "Collections",
+        nav_stays: "Stays",
+        nav_hosting: "Owners",
+        nav_experience: "Experience",
+        nav_admin: "Admin login",
+        hero_cta_primary: "Explore stays",
+        hero_cta_secondary: "View collections",
+        nav_dashboard: "Dashboard",
+        hero_kicker: "Stays in Morocco",
+        hero_title: "Stay in Morocco with a <em>clearer experience</em>",
+        hero_copy: "DarNa brings together a curated selection of homes across Morocco with a smooth flow to explore, compare, and book distinctive stays.",
+        search_label: "Search",
+        search_placeholder: "City, home, tag, amenity...",
+        search_type: "Type",
+        search_type_all: "All",
+        search_guests: "Guests",
+        search_open: "Search",
+        search_close: "Close search",
+        search_submit: "Search",
+        admin_highlight_kicker: "Local admin",
+        admin_highlight_title: "Add a property and watch it appear here instantly",
+        admin_highlight_copy: "Sign in, publish a localStorage listing, and find it right away in the stays grid without a backend.",
+        admin_highlight_dashboard: "Open dashboard",
+        admin_highlight_login: "Admin login",
+        stat_properties: "Verified properties",
+        stat_cities: "Covered cities",
+        stat_satisfaction: "Reported satisfaction",
+        spotlight_kicker: "Spotlight",
+        spotlight_loading_name: "Signature selection",
+        spotlight_loading_copy: "A featured address shaped by design, light, and Moroccan lifestyle.",
+        spotlight_action: "View property",
+        country_label: "Morocco",
+        collections_kicker: "Collections",
+        collections_title: "Travel capsules with a <em>more editorial feel</em>",
+        collections_copy: "Each collection groups a style of stay and takes you directly to the detail page.",
+        collections_loading: "DarNa collections",
+        collections_empty: "No collection available.",
+        collections_open: "Open collection",
+        categories_kicker: "Categories",
+        categories_title: "Explore by <em>property type</em>",
+        categories_loading: "DarNa property types",
+        categories_empty: "No category available.",
+        categories_count: "listings in this category",
+        stays_kicker: "Available stays",
+        stays_title: "Discover homes <em>that fit your stay</em>",
+        stays_intro: "Refine your search by destination, property type, and number of guests.",
+        stays_loading: "DarNa selection",
+        stays_view: "View",
+        stays_new: "New listing",
+        stays_result_zero: "0 properties found for this search.",
+        stays_result_one: "1 property available for this search.",
+        stays_result_many: "{count} properties available for this search.",
+        stays_empty: "No property matches this search.",
+        hosting_kicker: "Owners",
+        hosting_title: "Add new listings from an <em>admin dashboard</em>",
+        hosting_copy: "The admin dashboard lets you add and remove properties, then display them directly in this grid without a backend or database.",
+        hosting_status: "Project status",
+        hosting_tag_storage: "LocalStorage",
+        hosting_tag_session: "SessionStorage",
+        hosting_tag_bootstrap: "Bootstrap",
+        hosting_tag_responsive: "Responsive",
+        hosting_tag_js: "Dynamic JS",
+        experience_kicker: "Why DarNa",
+        experience_title: "A booking flow that feels <em>cleaner</em>",
+        experience_copy: "Clear search, checked availability, cleaner mobile UI, and smooth navigation between listing, detail, booking, and account spaces.",
+        experience_step_one_title: "Choose",
+        experience_step_one_copy: "Filter by destination, type, and capacity with more editorial cards and clearer structure.",
+        experience_step_two_title: "Check",
+        experience_step_two_copy: "Each request checks availability and blocks overlapping reservations.",
+        experience_step_three_title: "Manage",
+        experience_step_three_copy: "A local admin login opens the dashboard, adds listings, and keeps the session until the tab closes.",
+        cta_kicker: "DarNa account",
+        cta_title: "Add your properties from a <em>local admin area</em>",
+        cta_copy: "Sign in with the admin credentials, publish local listings, and display them instantly across the project's static pages.",
+        cta_dashboard: "Open dashboard",
+        cta_login: "Admin login",
+        footer_copy: "A more premium platform to book, manage, and showcase rentals and shared stays across Morocco.",
+        footer_explorer: "Explore",
+        footer_home: "Home",
+        footer_stays: "Stays",
+        footer_experience: "Experience",
+        footer_account: "Account",
+        footer_admin: "Admin login",
+        footer_dashboard: "Dashboard",
+        footer_session: "Local session",
+        footer_contact: "Contact"
+      },
+      ar: {
+        page_title: "DarNa | اقامات تصميمية في المغرب",
+        page_description: "معاينة DarNa الثابتة مع اعلانات محلية ولوحة ادارة ودعم متعدد اللغات.",
+        nav_menu: "القائمة",
+        nav_collections: "المجموعات",
+        nav_stays: "الاقامات",
+        nav_hosting: "الملاك",
+        nav_experience: "التجربة",
+        nav_admin: "دخول الادارة",
+        nav_dashboard: "لوحة التحكم",
+        hero_kicker: "اقامات في المغرب",
+        hero_title: "اقم في المغرب مع <em>تجربة اوضح</em>",
+        hero_copy: "تجمع DarNa مجموعة مختارة من الاقامات عبر المغرب مع مسار واضح لاستكشاف العروض ومقارنتها وحجزها.",
+        search_label: "بحث",
+        search_placeholder: "مدينة، سكن، وسم، تجهيز...",
+        search_type: "النوع",
+        search_type_all: "الكل",
+        search_guests: "المسافرون",
+        search_open: "ابحث",
+        search_close: "اغلاق البحث",
+        search_submit: "ابحث",
+        admin_highlight_kicker: "ادارة محلية",
+        admin_highlight_title: "اضف عقارا وشاهده يظهر هنا مباشرة",
+        admin_highlight_copy: "سجل الدخول، انشر اعلانا في localStorage ثم ستجده فورا داخل شبكة الاقامات بدون backend.",
+        admin_highlight_dashboard: "فتح لوحة التحكم",
+        admin_highlight_login: "دخول الادارة",
+        stat_properties: "عقارات موثقة",
+        stat_cities: "مدن مغطاة",
+        stat_satisfaction: "رضا معلن",
+        spotlight_kicker: "واجهة اليوم",
+        spotlight_loading_name: "اختيار مميز",
+        spotlight_loading_copy: "عنوان يعكس التصميم والضوء واسلوب العيش المغربي.",
+        spotlight_action: "عرض العقار",
+        country_label: "المغرب",
+        collections_kicker: "المجموعات",
+        collections_title: "مختارات سفر <em>اكثر تحريرا</em>",
+        collections_copy: "كل مجموعة تجمع نوعا من الاقامات وتنقلك مباشرة الى الصفحة التفصيلية.",
+        collections_loading: "مجموعات DarNa",
+        collections_empty: "لا توجد مجموعات حاليا.",
+        collections_open: "فتح المجموعة",
+        categories_kicker: "الفئات",
+        categories_title: "استكشف حسب <em>نوع العقار</em>",
+        categories_loading: "انواع العقارات",
+        categories_empty: "لا توجد فئات حاليا.",
+        categories_count: "عقارات في هذه الفئة",
+        stays_kicker: "الاقامات المتاحة",
+        stays_title: "اكتشف عقارات <em>مناسبة لاقامتك</em>",
+        stays_intro: "حسن البحث حسب الوجهة ونوع العقار وعدد المسافرين.",
+        stays_loading: "اختيارات DarNa",
+        stays_view: "عرض",
+        stays_new: "اعلان جديد",
+        stays_result_zero: "لم يتم العثور على اي عقار لهذا البحث.",
+        stays_result_one: "يوجد عقار واحد مطابق لهذا البحث.",
+        stays_result_many: "يوجد {count} عقارات مطابقة لهذا البحث.",
+        stays_empty: "لا يوجد اي عقار يطابق هذا البحث.",
+        hosting_kicker: "الملاك",
+        hosting_title: "اضف اعلانات جديدة من <em>لوحة ادارة</em>",
+        hosting_copy: "لوحة الادارة تمكنك من اضافة العقارات وحذفها ثم عرضها مباشرة في هذه الشبكة بدون backend او قاعدة بيانات.",
+        hosting_status: "حالة المشروع",
+        hosting_tag_storage: "LocalStorage",
+        hosting_tag_session: "SessionStorage",
+        hosting_tag_bootstrap: "Bootstrap",
+        hosting_tag_responsive: "Responsive",
+        hosting_tag_js: "JavaScript ديناميكي",
+        experience_kicker: "لماذا DarNa",
+        experience_title: "مسار حجز <em>اوضح</em>",
+        experience_copy: "بحث واضح، توفر متحقق، واجهة هاتف انظف، وتنقل سلس بين القائمة والصفحة التفصيلية والحجز والحساب.",
+        experience_step_one_title: "اختر",
+        experience_step_one_copy: "صف حسب الوجهة والنوع والسعة باستعمال بطاقات اوضح وبنية افضل.",
+        experience_step_two_title: "تحقق",
+        experience_step_two_copy: "كل طلب يفحص التوفر ويمنع تداخل الحجوزات.",
+        experience_step_three_title: "ادبر",
+        experience_step_three_copy: "دخول اداري محلي يفتح لوحة التحكم ويضيف الاعلانات ويحافظ على الجلسة حتى اغلاق التبويب.",
+        cta_kicker: "حساب DarNa",
+        cta_title: "اضف عقاراتك من <em>مساحة ادارة محلية</em>",
+        cta_copy: "سجل الدخول ببيانات الادارة، انشر اعلانات محلية، واعرضها فورا داخل الصفحات الثابتة للمشروع.",
+        cta_dashboard: "فتح لوحة التحكم",
+        cta_login: "دخول الادارة",
+        footer_copy: "منصة اكثر تميزا لحجز وادارة وابراز الاقامات والكراء المشترك في المغرب.",
+        footer_explorer: "استكشاف",
+        footer_home: "الرئيسية",
+        footer_stays: "الاقامات",
+        footer_experience: "التجربة",
+        footer_account: "الحساب",
+        footer_admin: "دخول الادارة",
+        footer_dashboard: "لوحة التحكم",
+        footer_session: "جلسة محلية",
+        footer_contact: "اتصال"
+      }
+    };
+
+    function escapeHtml(value) {
+      return DarNa.escapeHtml(value);
+    }
+
+    function formatMoney(value) {
+      return DarNa.formatMoney(value);
+    }
+
+    function propertyLink(slug) {
+      return DarNa.propertyLink(slug);
+    }
+
+    function ratingStars(value) {
+      return DarNa.ratingStars(value);
+    }
+
+    function normalizeSearch(value) {
+      return DarNa.slugify(String(value || "").replace(/-/g, " "));
+    }
+
+    function currentLanguage() {
+      return DarNa.getLanguage();
+    }
+
+    function translate(key, values = {}) {
+      const language = currentLanguage();
+      const dictionary = HOME_TRANSLATIONS[language] || HOME_TRANSLATIONS.fr;
+      const fallback = HOME_TRANSLATIONS.fr[key] || key;
+      const template = dictionary[key] || fallback;
+
+      return Object.entries(values).reduce((result, [name, value]) => {
+        return result.replaceAll(`{${name}}`, String(value));
+      }, template);
+    }
+
+    function setText(id, key, values = {}) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = translate(key, values);
+      }
+    }
+
+    function setHtml(id, key, values = {}) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.innerHTML = translate(key, values);
+      }
+    }
+
+    function setPlaceholder(id, key) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.setAttribute("placeholder", translate(key));
+      }
+    }
+
+    function currentGuests() {
+      return Math.max(1, Number(guestsInput.value || 1));
+    }
+
+    function currentType() {
+      return DarNa.normalizeType(typeInput.value);
+    }
+
+    function updateMeta() {
+      document.title = translate("page_title");
+      if (metaDescription) {
+        metaDescription.setAttribute("content", translate("page_description"));
+      }
+    }
+
+    function applyStaticText() {
+      updateMeta();
+      setText("navMenuButton", "nav_menu");
+      setText("navCollections", "nav_collections");
+      setText("navStays", "nav_stays");
+      setText("navExperience", "nav_experience");
+      setText("navAdminLink", "nav_admin");
+
+      setText("heroKicker", "hero_kicker");
+      setHtml("heroTitle", "hero_title");
+      setText("heroCopy", "hero_copy");
+      setText("heroPrimaryCta", "hero_cta_primary");
+      setText("heroSecondaryCta", "hero_cta_secondary");
+      setText("destinationLabel", "search_label");
+      setPlaceholder("destinationInput", "search_placeholder");
+      setText("typeLabel", "search_type");
+      setText("guestsLabel", "search_guests");
+      setText("searchSubmitButton", "search_submit");
+
+      setText("statPropertiesLabel", "stat_properties");
+      setText("statCitiesLabel", "stat_cities");
+      setText("statSatisfactionLabel", "stat_satisfaction");
+      setText("spotlightKicker", "spotlight_kicker");
+      setText("spotlightName", "spotlight_loading_name");
+      setText("spotlightCopy", "spotlight_loading_copy");
+      setText("spotlightLink", "spotlight_action");
+      setText("spotlightLocation", "country_label");
+
+      setText("collectionsKicker", "collections_kicker");
+      setHtml("collectionsTitle", "collections_title");
+      setText("collectionsCopy", "collections_copy");
+      setText("collectionsLoading", "collections_loading");
+
+      setText("categoriesKicker", "categories_kicker");
+      setHtml("categoriesTitle", "categories_title");
+      setText("categoriesLoading", "categories_loading");
+
+      setText("staysKicker", "stays_kicker");
+      setHtml("staysTitle", "stays_title");
+      setText("listingFeedback", "stays_intro");
+      setText("staysLoading", "stays_loading");
+
+      setText("experienceKicker", "experience_kicker");
+      setHtml("experienceTitle", "experience_title");
+      setText("experienceCopy", "experience_copy");
+      setText("experienceStepOneTitle", "experience_step_one_title");
+      setText("experienceStepOneCopy", "experience_step_one_copy");
+      setText("experienceStepTwoTitle", "experience_step_two_title");
+      setText("experienceStepTwoCopy", "experience_step_two_copy");
+      setText("experienceStepThreeTitle", "experience_step_three_title");
+      setText("experienceStepThreeCopy", "experience_step_three_copy");
+
+      setText("footerCopy", "footer_copy");
+      setText("footerExplorerTitle", "footer_explorer");
+      setText("footerHomeLink", "footer_home");
+      setText("footerStaysLink", "footer_stays");
+      setText("footerExperienceLink", "footer_experience");
+      setText("footerAccountTitle", "footer_account");
+      setText("footerAdminLink", "footer_admin");
+      setText("footerContactTitle", "footer_contact");
+    }
+
+    function initReveal(root = document) {
+      const revealItems = Array.from(root.querySelectorAll("[data-reveal]"))
+        .filter(element => !element.dataset.revealBound);
+
+      if (!revealItems.length) {
+        return;
+      }
+
+      if (!("IntersectionObserver" in window)) {
+        revealItems.forEach(element => {
+          element.classList.add("is-visible");
+          element.dataset.revealBound = "true";
+        });
+        return;
+      }
+
+      if (!revealObserver) {
+        revealObserver = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) {
+              return;
+            }
+
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          });
+        }, {
+          rootMargin: "0px 0px -12% 0px",
+          threshold: 0.12
+        });
+      }
+
+      revealItems.forEach(element => {
+        element.dataset.revealBound = "true";
+        revealObserver.observe(element);
+      });
+    }
+
+    function updateActiveNav() {
+      if (!sectionTargets.length) {
+        return;
+      }
+
+      const navbarOffset = parseInt(getComputedStyle(document.documentElement)
+        .getPropertyValue("--navbar-shell-height"), 10) || 88;
+      const scrollMarker = window.scrollY + navbarOffset + 36;
+      let activeId = "";
+
+      sectionTargets.forEach(({ target }) => {
+        if (scrollMarker >= target.offsetTop) {
+          activeId = target.id;
+        }
+      });
+
+      if (!activeId && scrollMarker + window.innerHeight >= document.documentElement.scrollHeight - 16) {
+        activeId = sectionTargets[sectionTargets.length - 1].target.id;
+      }
+
+      sectionTargets.forEach(({ link, target }) => {
+        link.classList.toggle("is-active", activeId === target.id);
+      });
+    }
+
+    function syncSearchPanel() {
+      const isMobile = mobileSearchQuery.matches;
+      const isExpanded = isMobile ? searchExpanded : true;
+
+      searchToggleButton.hidden = !isMobile;
+      searchPanelBody.hidden = !isExpanded;
+      searchPanel.classList.toggle("is-mobile-collapsed", isMobile && !isExpanded);
+      searchToggleButton.setAttribute("aria-expanded", isExpanded ? "true" : "false");
+      searchToggleButton.textContent = translate(isExpanded ? "search_close" : "search_open");
+    }
+
+    function resetSearchPanelForViewport() {
+      searchExpanded = !mobileSearchQuery.matches;
+      syncSearchPanel();
+    }
+
+    function getCategories(source) {
+      const language = currentLanguage();
+      const counts = source.reduce((map, property) => {
+        const key = property.typeKey || DarNa.normalizeType(property.type);
+        const current = map.get(key) || {
+          key,
+          label: DarNa.getTypeLabel(key, language),
+          count: 0
+        };
+
+        current.count += 1;
+        map.set(key, current);
+        return map;
+      }, new Map());
+
+      return Array.from(counts.values()).sort((left, right) => {
+        if (right.count !== left.count) {
+          return right.count - left.count;
+        }
+
+        return left.label.localeCompare(right.label, language === "ar" ? "ar" : language);
+      });
+    }
+
+    function ratingLine(property) {
+      const reviews = property.reviews || "";
+
+      if (Number(property.rating || 0) > 0) {
+        return `${escapeHtml(ratingStars(property.rating))} ${escapeHtml(Number(property.rating).toFixed(1))} &middot; ${escapeHtml(reviews)}`;
+      }
+
+      return escapeHtml(reviews || translate("stays_new"));
+    }
+
+    function stayCard(property, index = 0) {
+      const language = currentLanguage();
+      const typeKey = property.typeKey || DarNa.normalizeType(property.type);
+      const image = property.thumbnailImage || property.photos?.[0]?.image || "";
+      const tags = Array.isArray(property.listingTags) ? property.listingTags.slice(0, 3) : [];
+
+      return `
+        <div class="col-lg-4 col-md-6">
+          <article class="stay-card h-100" data-reveal style="--reveal-delay: ${Math.min(index, 5) * 70}ms;">
+            <div class="stay-media" style="background-image: linear-gradient(135deg, rgba(184,90,43,0.14), rgba(27,20,16,0.14)), url('${escapeHtml(image)}')"></div>
+            <div class="stay-body d-flex flex-column h-100">
+              <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                <div>
+                  <div class="soft-copy small mb-1">${escapeHtml(property.location || property.city || "")}</div>
+                  <h3 class="font-display h2 mb-0">${escapeHtml(property.name)}</h3>
+                </div>
+                <span class="tiny-tag">${escapeHtml(DarNa.getTypeLabel(typeKey, language))}</span>
+              </div>
+              <p class="soft-copy mb-3">${escapeHtml(property.summary || "")}</p>
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                ${tags.map(tag => `<span class="chip-tag data-pill">${escapeHtml(tag)}</span>`).join("")}
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto gap-3 flex-wrap">
+                <div>
+                  <div class="price-line">${escapeHtml(formatMoney(property.price))} <span>${escapeHtml(DarNa.getPriceSuffix(property.priceUnit, language))}</span></div>
+                  <div class="soft-copy small">${ratingLine(property)}</div>
+                </div>
+                <a class="primary-pill" href="${propertyLink(property.slug)}">${escapeHtml(translate("stays_view"))}</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      `;
+    }
+
+    function collectionCard(property, index = 0) {
+      const tags = (property.listingTags || []).slice(0, 3);
+
+      return `
+        <div class="col-lg-4">
+          <article class="collection-card h-100" data-reveal style="--reveal-delay: ${Math.min(index, 4) * 80}ms;">
+            <div class="collection-media" style="background-image: linear-gradient(180deg, rgba(14,10,8,0.15), rgba(14,10,8,0.55)), url('${escapeHtml(property.thumbnailImage || property.photos?.[0]?.image || "")}')"></div>
+            <div class="p-4">
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                ${tags.map(tag => `<span class="tiny-tag">${escapeHtml(tag)}</span>`).join("")}
+              </div>
+              <div class="soft-copy small mb-2">${escapeHtml(property.city || "")}</div>
+              <h3 class="font-display h1 mb-2">${escapeHtml(property.name || "")}</h3>
+              <p class="soft-copy mb-4">${escapeHtml(property.summary || "")}</p>
+              <a class="primary-pill" href="${propertyLink(property.slug)}">${escapeHtml(translate("collections_open"))}</a>
+            </div>
+          </article>
+        </div>
+      `;
+    }
+
+    function categoryCard(type, count, index = 0) {
+      const language = currentLanguage();
+      const gradients = {
+        riad: "linear-gradient(135deg, rgba(184,90,43,0.18), rgba(141,61,23,0.22))",
+        villa: "linear-gradient(135deg, rgba(43,115,95,0.18), rgba(24,74,60,0.22))",
+        apartment: "linear-gradient(135deg, rgba(81,77,170,0.18), rgba(49,44,109,0.22))",
+        maison: "linear-gradient(135deg, rgba(165,128,64,0.18), rgba(129,88,35,0.22))",
+        house: "linear-gradient(135deg, rgba(165,128,64,0.18), rgba(129,88,35,0.22))",
+        studio: "linear-gradient(135deg, rgba(63,111,173,0.18), rgba(42,68,104,0.22))",
+        room: "linear-gradient(135deg, rgba(150,96,60,0.18), rgba(85,49,29,0.22))",
+        camp: "linear-gradient(135deg, rgba(150,96,60,0.18), rgba(85,49,29,0.22))"
+      };
+
+      return `
+        <div class="col-lg-3 col-md-6">
+          <button class="category-card w-100 text-start ${typeInput.value === type ? "active" : ""}" data-category="${escapeHtml(type)}" data-reveal style="background: ${gradients[type] || "var(--panel)"}; --reveal-delay: ${Math.min(index, 5) * 70}ms;">
+            <div class="soft-copy small mb-2 text-uppercase">${escapeHtml(DarNa.getTypeLabel(type, language))}</div>
+            <div class="font-display display-6 mb-2">${escapeHtml(String(count))}</div>
+            <div class="soft-copy mb-0">${escapeHtml(translate("categories_count"))}</div>
+          </button>
+        </div>
+      `;
+    }
+
+    function attachCategoryEvents() {
+      document.querySelectorAll("[data-category]").forEach(button => {
+        button.addEventListener("click", () => {
+          typeInput.value = button.dataset.category || "";
+          performSearch();
+        });
+      });
+    }
+
+    function renderTypeOptions(source) {
+      const categories = getCategories(source);
+      const selectedType = currentType();
+
+      typeInput.innerHTML = [
+        `<option value="">${escapeHtml(translate("search_type_all"))}</option>`,
+        ...categories.map(category => `<option value="${escapeHtml(category.key)}">${escapeHtml(DarNa.getTypeLabel(category.key, currentLanguage()))}</option>`)
+      ].join("");
+
+      if (selectedType && categories.some(category => category.key === selectedType)) {
+        typeInput.value = selectedType;
+      }
+    }
+
+    function animateCounter(elementId, value, suffix = "") {
+      const element = document.getElementById(elementId);
+      if (!element) {
+        return;
+      }
+
+      const targetValue = Math.max(0, Number(value || 0));
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (reducedMotion) {
+        element.innerHTML = suffix ? `${targetValue}<span>${suffix}</span>` : String(targetValue);
+        return;
+      }
+
+      const start = performance.now();
+      const duration = 900;
+
+      function frame(timestamp) {
+        const progress = Math.min((timestamp - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(targetValue * eased);
+        element.innerHTML = suffix ? `${current}<span>${suffix}</span>` : String(current);
+
+        if (progress < 1) {
+          window.requestAnimationFrame(frame);
+        }
+      }
+
+      window.requestAnimationFrame(frame);
+    }
+
+    function renderStats() {
+      const ratings = allProperties.map(property => Number(property.rating || 0)).filter(value => value > 0);
+      const satisfaction = ratings.length
+        ? Math.round((ratings.reduce((sum, value) => sum + value, 0) / ratings.length / 5) * 100)
+        : 98;
+      const cities = new Set(allProperties.map(property => property.city).filter(Boolean));
+
+      animateCounter("statProperties", allProperties.length);
+      animateCounter("statCities", cities.size);
+      animateCounter("statSatisfaction", satisfaction, "%");
+    }
+
+    function renderSpotlight(source) {
+      const spotlight = source[0];
+
+      document.getElementById("spotlightLink").textContent = translate("spotlight_action");
+
+      if (!spotlight) {
+        document.getElementById("spotlightName").textContent = translate("spotlight_loading_name");
+        document.getElementById("spotlightCopy").textContent = translate("spotlight_loading_copy");
+        document.getElementById("spotlightLocation").textContent = translate("country_label");
+        document.getElementById("spotlightTags").innerHTML = "";
+        return;
+      }
+
+      document.getElementById("spotlightMedia").style.backgroundImage =
+        `linear-gradient(180deg, rgba(14,10,8,0.12), rgba(14,10,8,0.55)), url('${spotlight.thumbnailImage || spotlight.photos?.[0]?.image || ""}')`;
+      document.getElementById("spotlightName").textContent = spotlight.name || "DarNa";
+      document.getElementById("spotlightCopy").textContent = spotlight.summary || translate("spotlight_loading_copy");
+      document.getElementById("spotlightLocation").textContent = spotlight.location || spotlight.city || translate("country_label");
+      document.getElementById("spotlightLink").href = propertyLink(spotlight.slug);
+      document.getElementById("spotlightTags").innerHTML = (spotlight.listingTags || [])
+        .slice(0, 3)
+        .map(tag => `<span class="tiny-tag">${escapeHtml(tag)}</span>`)
+        .join("");
+    }
+
+    function renderCollections(source) {
+      const collections = source.slice(0, 3);
+      collectionsGrid.innerHTML = collections.length
+        ? collections.map((property, index) => collectionCard(property, index)).join("")
+        : `<div class="col-12"><div class="empty-card p-4 rounded-4">${escapeHtml(translate("collections_empty"))}</div></div>`;
+      initReveal(collectionsGrid);
+    }
+
+    function renderCategories(source) {
+      const categories = getCategories(source);
+      categoriesGrid.innerHTML = categories.length
+        ? categories.map((category, index) => categoryCard(category.key, category.count, index)).join("")
+        : `<div class="col-12"><div class="empty-card p-4 rounded-4">${escapeHtml(translate("categories_empty"))}</div></div>`;
+      initReveal(categoriesGrid);
+    }
+
+    function renderProperties(properties) {
+      if (!properties.length) {
+        listingFeedback.textContent = translate("stays_result_zero");
+        staysGrid.innerHTML = `<div class="col-12"><div class="empty-card p-4 rounded-4">${escapeHtml(translate("stays_empty"))}</div></div>`;
+        initReveal(staysGrid);
+        return;
+      }
+
+      listingFeedback.textContent = properties.length === 1
+        ? translate("stays_result_one")
+        : translate("stays_result_many", { count: properties.length });
+
+      staysGrid.innerHTML = properties.map((property, index) => stayCard(property, index)).join("");
+      initReveal(staysGrid);
+    }
+
+    function renderOverview(properties) {
+      const source = properties.length ? properties : allProperties;
+      renderStats();
+      renderSpotlight(source);
+      renderCollections(source);
+      renderCategories(source);
+      renderTypeOptions(allProperties);
+      attachCategoryEvents();
+    }
+
+    function matchesSearch(property) {
+      const query = normalizeSearch(destinationInput.value);
+      const type = currentType();
+      const guests = currentGuests();
+
+      const matchesQuery = !query || normalizeSearch([
+        property.name,
+        property.city,
+        property.neighborhood,
+        property.location,
+        property.summary,
+        property.description,
+        ...(property.listingTags || [])
+      ].join(" ")).includes(query);
+
+      const matchesType = !type || (property.typeKey || DarNa.normalizeType(property.type)) === type;
+      const matchesGuests = Number(property.capacity || 1) >= guests;
+
+      return matchesQuery && matchesType && matchesGuests;
+    }
+
+    function performSearch() {
+      const filteredProperties = allProperties.filter(matchesSearch);
+      renderOverview(filteredProperties);
+      renderProperties(filteredProperties);
+    }
+
+    function refreshCatalog() {
+      allProperties = DarNa.getMergedProperties();
+      performSearch();
+    }
+
+    DarNa.bindThemeButtons(document);
+    DarNa.bindLanguageButtons(document, () => {
+      applyStaticText();
+      syncSearchPanel();
+      performSearch();
+      updateActiveNav();
+    });
+
+    searchForm.addEventListener("submit", event => {
+      event.preventDefault();
+      performSearch();
+
+      if (mobileSearchQuery.matches) {
+        searchExpanded = false;
+        syncSearchPanel();
+      }
+    });
+
+    typeInput.addEventListener("change", performSearch);
+    guestsInput.addEventListener("input", performSearch);
+    searchToggleButton.addEventListener("click", () => {
+      if (!mobileSearchQuery.matches) {
+        return;
+      }
+
+      searchExpanded = !searchExpanded;
+      syncSearchPanel();
+
+      if (searchExpanded) {
+        destinationInput.focus();
+      }
+    });
+
+    if (typeof mobileSearchQuery.addEventListener === "function") {
+      mobileSearchQuery.addEventListener("change", resetSearchPanelForViewport);
+    } else if (typeof mobileSearchQuery.addListener === "function") {
+      mobileSearchQuery.addListener(resetSearchPanelForViewport);
+    }
+
+    window.addEventListener("scroll", updateActiveNav, { passive: true });
+    window.addEventListener("resize", updateActiveNav);
+    window.addEventListener("focus", refreshCatalog);
+    window.addEventListener("storage", event => {
+      if (event.key === "darna-language") {
+        DarNa.setLanguage(event.newValue || "fr");
+        DarNa.syncLanguageButtons(document);
+        DarNa.syncThemeButtons(document);
+        applyStaticText();
+        syncSearchPanel();
+        performSearch();
+        updateActiveNav();
+        return;
+      }
+
+      if (event.key === "darna-theme") {
+        DarNa.setTheme(event.newValue || "light");
+        DarNa.syncThemeButtons(document);
+        return;
+      }
+
+      if (!event.key || event.key === DarNa.PROPERTY_STORAGE_KEY) {
+        refreshCatalog();
+      }
+    });
+
+    applyStaticText();
+    syncSearchPanel();
+    performSearch();
+    initReveal();
+    updateActiveNav();
+  });
+</script>
+
+<!-- Gestion AJAX du formulaire contact (Netlify Forms) -->
+<script>
+  (function() {
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+
+    const successBox = document.getElementById('contactSuccess');
+    const errorBox = document.getElementById('contactErrorBox');
+    const submitBtn = document.getElementById('contactSubmit');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      successBox.style.display = 'none';
+      errorBox.style.display = 'none';
+
+      if (!form.reportValidity()) return;
+
+      const originalBtnText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Envoi…';
+
+      try {
+        const formData = new FormData(form);
+        const body = new URLSearchParams(formData).toString();
+
+        const response = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body
+        });
+
+        if (response.ok) {
+          successBox.style.display = 'block';
+          form.reset();
+          successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          throw new Error('Erreur reseau');
+        }
+      } catch (err) {
+        errorBox.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+      }
+    });
+  })();
+</script>
+</body>
+</html>

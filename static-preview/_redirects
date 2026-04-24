@@ -1,0 +1,16 @@
+# Netlify redirects & rewrites
+# Documentation : https://docs.netlify.com/routing/redirects/
+
+# Bloquer l'acces direct a la page de detection forms (utilitaire interne)
+/forms.html  /404.html  404
+
+# Rediriger l'ancienne URL home.html vers la nouvelle
+/home.html   /          301
+/home        /          301
+
+# Routes propres (sans .html dans l'URL)
+/property              /property.html              200
+/reservation           /reservation.html           200
+
+# Fallback 404 (toute URL non trouvee)
+/*  /404.html  404
